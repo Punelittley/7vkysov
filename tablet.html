@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Экран кухни — Семь вкусов (Белорецк)</title>
+  <link rel="icon" type="image/png" href="public/favicon.png" />
+  <link rel="stylesheet" href="tablet.css" />
+</head>
+<body>
+
+  <!-- Верхняя панель планшета кухни -->
+  <header class="tablet-topbar">
+    <div class="tablet-brand">
+      <div class="tablet-brand-mark">7</div>
+      <div>
+        <div style="font-weight: 800; font-size: 1.15rem; color: var(--ink);">СЕМЬ ВКУСОВ · ЭКРАН КУХНИ</div>
+        <div class="tablet-badge-online">
+          <span class="pulsing-dot"></span>
+          <span>ОНЛАЙН · ПРИЕМ ЗАКАЗОВ В РЕАЛЬНОМ ВРЕМЕНИ</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tablet-actions">
+      <button class="t-btn" id="btnToggleSound">
+        🔔 Звук: ВКЛ
+      </button>
+      <button class="t-btn" id="btnTestSound" title="Проверить звонок кухни">
+        🔊 Тест звонка
+      </button>
+      <button class="t-btn t-btn-accent" id="btnSimulateOrder" title="Создать тестовый заказ">
+        + Тестовый заказ
+      </button>
+      <a href="index.html" class="t-btn" style="text-decoration: none;">
+        🌐 На сайт
+      </a>
+    </div>
+  </header>
+
+  <!-- Панель статусов -->
+  <nav class="tablet-tabs-bar">
+    <button class="t-tab active" data-filter="active">
+      <span>Активные в работе</span>
+      <span class="t-tab-count" id="cntActive">0</span>
+    </button>
+    <button class="t-tab" data-filter="new">
+      <span>🔥 Новые</span>
+      <span class="t-tab-count" id="cntNew">0</span>
+    </button>
+    <button class="t-tab" data-filter="cooking">
+      <span>🍳 Готовятся</span>
+      <span class="t-tab-count" id="cntCooking">0</span>
+    </button>
+    <button class="t-tab" data-filter="delivering">
+      <span>🚗 В доставке</span>
+      <span class="t-tab-count" id="cntDelivering">0</span>
+    </button>
+    <button class="t-tab" data-filter="done">
+      <span>✓ Завершенные</span>
+      <span class="t-tab-count" id="cntDone">0</span>
+    </button>
+
+    <div style="margin-left: auto;">
+      <button class="t-btn" id="btnClearDone" style="font-size: 0.8rem; padding: 6px 12px; color: var(--muted);">
+        🗑️ Очистить архив
+      </button>
+    </div>
+  </nav>
+
+  <!-- Сетка заказов кухни -->
+  <main class="tablet-content">
+    <div class="orders-grid" id="ordersGrid">
+      <!-- Заказы рендерятся из tablet.js -->
+    </div>
+  </main>
+
+  <script src="tablet.js"></script>
+</body>
+</html>
