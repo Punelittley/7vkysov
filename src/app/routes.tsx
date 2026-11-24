@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { Link, createBrowserRouter } from "react-router";
 import Site, { type SitePage } from "./Site";
 
 function Page({ page }: { page: SitePage }) {
@@ -11,15 +11,20 @@ function NotFound() {
       <span>404</span>
       <h1>Такой страницы нет</h1>
       <p>Но любимые блюда и тёплые встречи по-прежнему ждут вас.</p>
-      <a href="/">Вернуться на главную</a>
+      <Link to="/">Вернуться на главную</Link>
     </main>
   );
 }
 
-export const router = createBrowserRouter([
-  { path: "/", element: <Page page="home" /> },
-  { path: "/menu", element: <Page page="menu" /> },
-  { path: "/about", element: <Page page="about" /> },
-  { path: "/delivery", element: <Page page="delivery" /> },
-  { path: "*", Component: NotFound },
-]);
+export const router = createBrowserRouter(
+  [
+    { path: "/", element: <Page page="home" /> },
+    { path: "/menu", element: <Page page="menu" /> },
+    { path: "/about", element: <Page page="about" /> },
+    { path: "/delivery", element: <Page page="delivery" /> },
+    { path: "*", Component: NotFound },
+  ],
+  {
+    basename: import.meta.env.BASE_URL,
+  }
+);
