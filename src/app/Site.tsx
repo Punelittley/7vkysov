@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-type Category = "Все" | "Паста" | "Лимонады" | "Десерты";
+type Category = "Все" | "Горячее" | "Паста" | "Лимонады" | "Десерты";
 
 type SizeOption = {
   label: string;
@@ -10,7 +10,7 @@ type SizeOption = {
 type Product = {
   id: number;
   name: string;
-  category: "Паста" | "Лимонады" | "Десерты";
+  category: "Горячее" | "Паста" | "Лимонады" | "Десерты";
   description: string;
   price: number;
   weight?: string;
@@ -20,6 +20,103 @@ type Product = {
 };
 
 const products: Product[] = [
+  // Горячее
+  {
+    id: 18,
+    name: "Стейк из лосося на овощной подушке",
+    category: "Горячее",
+    description: "Нежный стейк из лосося (на гриле или на пару) на подушке из цукини с гранатовым соусом наршараб и лимоном",
+    price: 1370,
+    weight: "200/30/10 г",
+    badge: "Шеф рекомендует",
+    image: "/images/salmon-steak.jpg",
+  },
+  {
+    id: 19,
+    name: "Цыпленок по-тирольски",
+    category: "Горячее",
+    description: "Сочный цыплёнок с хрустящей аппетитной корочкой, запечённый по альпийскому рецепту с фирменным соусом",
+    price: 750,
+    weight: "400/30/30 г",
+    badge: "Хит",
+    image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 20,
+    name: "Оджахури со свининой",
+    category: "Горячее",
+    description: "Традиционное сытное блюдо: обжаренная свинина, дольки молодого картофеля, томаты, лук, чеснок и зелень",
+    price: 750,
+    weight: "450 г",
+    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 21,
+    name: "Оджахури с курицей",
+    category: "Горячее",
+    description: "Нежное куриное филе, запечённое с румяным картофелем, спелыми томатами, чесноком и свежей зеленью",
+    price: 750,
+    weight: "450 г",
+    image: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 22,
+    name: "Скоблянка с говядиной",
+    category: "Горячее",
+    description: "Тонкие ломтики говядины, обжаренные с лесными грибами, картофелем и луком в нежном соусе",
+    price: 820,
+    weight: "400 г",
+    badge: "Сытно",
+    image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 23,
+    name: "Говядина в кисло-сладком соусе с овощами",
+    category: "Горячее",
+    description: "Сочная говядина с хрустящим болгарским перцем, морковью и луком в пряном кисло-сладком соусе",
+    price: 820,
+    weight: "400 г",
+    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 24,
+    name: "Язык запеченный с картофелем",
+    category: "Горячее",
+    description: "Нежный деликатесный говяжий язык, запечённый под золотистой сырной корочкой с картофелем",
+    price: 790,
+    weight: "350 г",
+    badge: "Деликатес",
+    image: "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 25,
+    name: "Рыбка запеченная с картофелем",
+    category: "Горячее",
+    description: "Филе белой рыбы, томлёное в духовой печи с тонкими дольками картофеля, луком и травами",
+    price: 700,
+    weight: "350 г",
+    image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 26,
+    name: "Судак Орли",
+    category: "Горячее",
+    description: "Филе судака в пышном золотистом пивном кляре, подаётся с соусом тар-тар и свежим лимоном",
+    price: 740,
+    weight: "350 г",
+    badge: "Классика",
+    image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 27,
+    name: "Соусы в ассортименте",
+    category: "Горячее",
+    description: "Кетчуп, барбекю, кисло-сладкий, чесночный, наршараб, домашняя сметана на выбор",
+    price: 65,
+    weight: "30 г",
+    image: "https://images.unsplash.com/photo-1472476443507-c7a5948772fc?auto=format&fit=crop&w=1000&q=88",
+  },
+
   // Паста
   {
     id: 13,
@@ -210,7 +307,7 @@ const products: Product[] = [
   },
 ];
 
-const categories: Category[] = ["Все", "Паста", "Лимонады", "Десерты"];
+const categories: Category[] = ["Все", "Горячее", "Паста", "Лимонады", "Десерты"];
 
 function Icon({ name, size = 20 }: { name: "cart" | "arrow" | "close" | "minus" | "plus" | "check" | "phone" | "pin"; size?: number }) {
   const paths = {
@@ -302,7 +399,7 @@ export default function Site() {
           <span>7</span>
           <b>
             семь вкусов
-            <small>кафе · паста · десерты · лимонады</small>
+            <small>кафе · горячее · паста · десерты</small>
           </b>
         </a>
         <nav>
@@ -326,7 +423,7 @@ export default function Site() {
               Вкусные встречи<br />
               <em>начинаются здесь</em>
             </h1>
-            <p>Горячая авторская паста, освежающие лимонады, фирменные десерты и уютная атмосфера.</p>
+            <p>Фирменные горячие блюда, авторская паста, освежающие лимонады и домашние десерты.</p>
             <div>
               <a className="primary" href="#menu">
                 Выбрать блюда <Icon name="arrow" />
@@ -443,17 +540,17 @@ export default function Site() {
               Место, куда<br />
               <em>хочется вернуться</em>
             </h2>
-            <p>Открытая кухня, горячая паста, свежая выпечка и уютный зал. Приходите на вкусный вечер или заказывайте любимое домой.</p>
+            <p>Открытая кухня, сочные стейки, домашняя паста, свежая выпечка и уютный зал. Приходите на тёплый вечер или заказывайте любимое домой.</p>
             <a href="tel:+79639011818">
               Забронировать стол <Icon name="arrow" />
             </a>
           </div>
           <div className="photo-stack reveal">
             <figure>
-              <img src="/images/pasta-carbonara.jpg" alt="Паста Карбонара" />
+              <img src="/images/salmon-steak.jpg" alt="Стейк из лосося" />
             </figure>
             <figure>
-              <img src="/images/strudel-classic.jpg" alt="Легендарный штрудель" />
+              <img src="/images/pasta-carbonara.jpg" alt="Паста Карбонара" />
             </figure>
           </div>
         </section>
@@ -466,17 +563,17 @@ export default function Site() {
                 <em>Попробовать.</em>
               </h2>
             </div>
-            <p>Каждый вечер складывается из деталей: аппетитной горячей пасты, десертов и освежающих напитков.</p>
+            <p>Каждый вечер складывается из деталей: аппетитного стейка, горячей пасты, десертов и освежающих напитков.</p>
           </div>
           <div className="gallery-window reveal">
             <div className="gallery-track">
               {[
-                ["/images/pasta-carbonara.jpg", "Паста Карбонара", "01"],
-                ["/images/strudel-classic.jpg", "Горячий штрудель", "02"],
-                ["/images/lemonade-shimmering.jpg", "Мерцающий лимонад", "03"],
-                ["https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=1000&q=88", "Паста с лангустинами", "04"],
-                ["https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=1000&q=88", "Манго-маракуйя", "05"],
-                ["https://images.unsplash.com/photo-1562376552-0d160a2f238d?auto=format&fit=crop&w=1000&q=88", "Венские вафли", "06"],
+                ["/images/salmon-steak.jpg", "Стейк из лосося", "01"],
+                ["/images/pasta-carbonara.jpg", "Паста Карбонара", "02"],
+                ["/images/strudel-classic.jpg", "Горячий штрудель", "03"],
+                ["/images/lemonade-shimmering.jpg", "Мерцающий лимонад", "04"],
+                ["https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=1000&q=88", "Цыпленок по-тирольски", "05"],
+                ["https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1000&q=88", "Оджахури со свининой", "06"],
               ].map(([image, title, number], index) => (
                 <figure className={`gallery-card gallery-card-${index + 1}`} key={title}>
                   <img src={image} alt={title} loading="lazy" />
@@ -490,12 +587,12 @@ export default function Site() {
           </div>
           <div className="gallery-ticker" aria-hidden="true">
             <div>
+              <span>Стейки и горячее</span><i>·</i>
               <span>Горячая паста</span><i>·</i>
               <span>Свежая выпечка</span><i>·</i>
               <span>Авторские лимонады</span><i>·</i>
-              <span>Тёплые встречи</span><i>·</i>
+              <span>Стейки и горячее</span><i>·</i>
               <span>Горячая паста</span><i>·</i>
-              <span>Свежая выпечка</span><i>·</i>
             </div>
           </div>
         </section>
@@ -509,9 +606,9 @@ export default function Site() {
           </div>
           <div className="reason-list">
             {[
-              ["01", "Настоящая итальянская паста", "Готовим с правильной текстурой аль денте, нежными соусами и выдержанным пармезаном."],
-              ["02", "Свежие морепродукты и мясо", "Лангустины, тихоокеанские кальмары, сочная говядина и отборный бекон."],
-              ["03", "Бережная доставка", "Привезём пасту горячей в термоупаковке от 45 минут по Белорецку."],
+              ["01", "Мясо и рыба высшего качества", "Отборный лосось, нежная говядина, судак и фермерская птица."],
+              ["02", "Готовим прямо под ваш заказ", "Никаких разогретых полуфабрикатов — только свежесть с огня и печи."],
+              ["03", "Термоупаковка и быстрая доставка", "Блюда доставляются по Белорецку горячими и сочными, как при подаче в зале."],
             ].map(([number, title, text], index) => (
               <article className="reason reveal" style={{ transitionDelay: `${index * 90}ms` }} key={number}>
                 <span>{number}</span>
@@ -534,15 +631,15 @@ export default function Site() {
             </div>
           </div>
           <blockquote className="reveal">
-            <p>«Карбонара просто потрясающая — правильный соус, много сыра и хрустящий бекон! А чёрные спагетти с лангустинами выглядят как в дорогом ресторане».</p>
+            <p>«Стейк из лосося просто тает во рту — нежнейший, с соусом наршараб великолепно сочетается! И оджахури очень сытное, порции честные и большие».</p>
             <footer>
-              <b>Михаил</b>
+              <b>Дмитрий</b>
               <span>Ноябрь 2026</span>
             </footer>
           </blockquote>
           <div className="review-note reveal">
             <span>Более 500 отзывов</span>
-            <p>Спасибо, что выбираете «7 вкусов» для вкусных обедов и ужинов.</p>
+            <p>Спасибо, что выбираете «7 вкусов» для важных и душевных ужинов.</p>
           </div>
         </section>
 
@@ -589,7 +686,7 @@ export default function Site() {
               <div className="empty">
                 <Icon name="cart" size={36} />
                 <h3>Здесь пока пусто</h3>
-                <p>Добавьте горячую пасту, десерты или напитки из меню.</p>
+                <p>Добавьте горячие блюда, пасту, десерты или напитки из меню.</p>
                 <button className="primary" onClick={() => setCartOpen(false)}>
                   Выбрать позиции
                 </button>
