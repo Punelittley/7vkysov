@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-const asset = (url: string) => {
+export const asset = (url: string) => {
   if (!url) return "";
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
   const base = import.meta.env.BASE_URL || "/";
@@ -9,14 +9,14 @@ const asset = (url: string) => {
   return `${cleanBase}${cleanUrl}`;
 };
 
-type Category = "Все" | "Пицца" | "Закуски" | "Салаты" | "Супы" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
+export type Category = "Все" | "Пицца" | "Закуски" | "Салаты" | "Супы" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
 
-type SizeOption = {
+export type SizeOption = {
   label: string;
   price: number;
 };
 
-type Product = {
+export type Product = {
   id: number;
   name: string;
   category: "Пицца" | "Закуски" | "Салаты" | "Супы" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
@@ -28,7 +28,7 @@ type Product = {
   sizes?: SizeOption[];
 };
 
-const products: Product[] = [
+export const products: Product[] = [
   // Пицца
   {
     id: 70,
@@ -1343,6 +1343,13 @@ export default function Site() {
           <small>Наш адрес</small>
           <b><Icon name="pin" size={17} /> ул. Ленина, 38, Белорецк</b>
           <span>Республика Башкортостан</span>
+          <a
+            href="#tabletzakazeda"
+            title="Вход в терминал столика"
+            style={{ marginTop: "12px", display: "inline-block", opacity: 0.35, fontSize: "11px", color: "rgba(255,255,255,0.6)", textDecoration: "none" }}
+          >
+            🔒 Терминал (tabletzakazeda)
+          </a>
         </div>
       </footer>
 
