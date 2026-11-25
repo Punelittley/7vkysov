@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-type Category = "Все" | "Лимонады";
+type Category = "Все" | "Лимонады" | "Десерты";
 
 type SizeOption = {
   label: string;
@@ -10,15 +10,17 @@ type SizeOption = {
 type Product = {
   id: number;
   name: string;
-  category: "Лимонады";
+  category: "Лимонады" | "Десерты";
   description: string;
   price: number;
+  weight?: string;
   image: string;
   badge?: string;
-  sizes: SizeOption[];
+  sizes?: SizeOption[];
 };
 
 const products: Product[] = [
+  // Лимонады
   {
     id: 1,
     name: "Манго-маракуйя",
@@ -94,9 +96,69 @@ const products: Product[] = [
       { label: "500 мл", price: 440 },
     ],
   },
+
+  // Десерты
+  {
+    id: 7,
+    name: "Чизкейк в ассортименте",
+    category: "Десерты",
+    description: "Нежнейший сливочный чизкейк с бархатистой текстурой (классический, шоколадный или ягодный)",
+    price: 270,
+    weight: "100 г",
+    badge: "Хит",
+    image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 8,
+    name: "Легендарный штрудель классический с фруктами и орехами",
+    category: "Десерты",
+    description: "Тонкое хрустящее тесто, сочная фруктовая начинка с орехами и корицей. Подаётся с шариком мороженого",
+    price: 420,
+    weight: "200 г",
+    badge: "Легендарный",
+    image: "/images/strudel-classic.jpg",
+  },
+  {
+    id: 9,
+    name: "Легендарный штрудель с грушей и орехами",
+    category: "Десерты",
+    description: "Ароматный штрудель со спелой грушей, грецкими орехами и золотистой корочкой. Подаётся с мороженым",
+    price: 420,
+    weight: "200 г",
+    badge: "Выбор гостей",
+    image: "/images/strudel-classic.jpg",
+  },
+  {
+    id: 10,
+    name: "Венские вафли с мороженым",
+    category: "Десерты",
+    description: "Свежеиспечённые пышные венские вафли с хрустящей корочкой и шариком сливочного пломбира",
+    price: 270,
+    weight: "150 г",
+    image: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 11,
+    name: "Венские вафли с банановым мороженым и шоколадным топингом",
+    category: "Десерты",
+    description: "Золотистые тёплые вафли, нежное банановое мороженое и тёплый шоколадный топинг",
+    price: 290,
+    weight: "180 г",
+    badge: "Сладко",
+    image: "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 12,
+    name: "Венские вафли с клубничным мороженым и топингом",
+    category: "Десерты",
+    description: "Ароматные венские вафли, яркое клубничное мороженое и натуральный ягодный топинг",
+    price: 290,
+    weight: "180 г",
+    image: "https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=1000&q=88",
+  },
 ];
 
-const categories: Category[] = ["Все", "Лимонады"];
+const categories: Category[] = ["Все", "Лимонады", "Десерты"];
 
 function Icon({ name, size = 20 }: { name: "cart" | "arrow" | "close" | "minus" | "plus" | "check" | "phone" | "pin"; size?: number }) {
   const paths = {
@@ -117,7 +179,9 @@ export default function Site() {
   const [selectedSizes, setSelectedSizes] = useState<Record<number, string>>(() => {
     const initial: Record<number, string> = {};
     products.forEach((p) => {
-      initial[p.id] = p.sizes[0].label;
+      if (p.sizes && p.sizes.length > 0) {
+        initial[p.id] = p.sizes[0].label;
+      }
     });
     return initial;
   });
@@ -144,12 +208,13 @@ export default function Site() {
         const [idStr, sizeLabel] = key.split(":");
         const product = products.find((p) => p.id === Number(idStr));
         if (!product) return null;
-        const sizeOption = product.sizes.find((s) => s.label === sizeLabel) ?? product.sizes[0];
-        const price = sizeOption.price;
+        const sizeOption = product.sizes?.find((s) => s.label === sizeLabel);
+        const price = sizeOption ? sizeOption.price : product.price;
+        const displaySubtext = sizeOption ? sizeOption.label : product.weight;
         return {
           key,
           product,
-          sizeLabel,
+          sizeLabel: displaySubtext,
           price,
           quantity,
           itemTotal: price * quantity,
@@ -158,7 +223,7 @@ export default function Site() {
       .filter(Boolean) as {
         key: string;
         product: Product;
-        sizeLabel: string;
+        sizeLabel?: string;
         price: number;
         quantity: number;
         itemTotal: number;
@@ -185,7 +250,7 @@ export default function Site() {
           <span>7</span>
           <b>
             семь вкусов
-            <small>кафе · доставка</small>
+            <small>кафе · десерты · лимонады</small>
           </b>
         </a>
         <nav>
@@ -209,7 +274,7 @@ export default function Site() {
               Вкусные встречи<br />
               <em>начинаются здесь</em>
             </h1>
-            <p>Освежающие авторские лимонады, любимые блюда и тёплая атмосфера для каждого гостя.</p>
+            <p>Освежающие авторские лимонады, фирменные горячие штрудели, вафли и десерты.</p>
             <div>
               <a className="primary" href="#menu">
                 Выбрать блюда <Icon name="arrow" />
@@ -249,10 +314,11 @@ export default function Site() {
 
           <div className="product-grid">
             {visible.map((product) => {
-              const activeSize = selectedSizes[product.id] || product.sizes[0].label;
-              const sizeOption = product.sizes.find((s) => s.label === activeSize) ?? product.sizes[0];
-              const currentPrice = sizeOption.price;
-              const itemKey = `${product.id}:${activeSize}`;
+              const hasSizes = (product.sizes?.length ?? 0) > 1;
+              const activeSize = selectedSizes[product.id] || product.sizes?.[0]?.label;
+              const sizeOption = product.sizes?.find((s) => s.label === activeSize);
+              const currentPrice = sizeOption ? sizeOption.price : product.price;
+              const itemKey = hasSizes ? `${product.id}:${activeSize}` : `${product.id}`;
               const inCartQty = cart[itemKey] ?? 0;
 
               return (
@@ -262,11 +328,16 @@ export default function Site() {
                     {product.badge && <span>{product.badge}</span>}
                   </div>
                   <div className="product-info">
-                    <small>{product.category}</small>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <small>{product.category}</small>
+                      {product.weight && (
+                        <small style={{ color: "#71807b", fontWeight: 700 }}>{product.weight}</small>
+                      )}
+                    </div>
                     <h3>{product.name}</h3>
                     <p>{product.description}</p>
 
-                    {product.sizes.length > 1 && (
+                    {hasSizes && product.sizes && (
                       <div className="size-selector">
                         {product.sizes.map((s) => (
                           <button
@@ -282,7 +353,15 @@ export default function Site() {
                     )}
 
                     <div>
-                      <strong>{currentPrice} ₽</strong>
+                      <strong>
+                        {currentPrice} ₽
+                        {product.weight && !hasSizes && (
+                          <small style={{ fontSize: "12px", fontWeight: "normal", color: "#71807b", marginLeft: "4px" }}>
+                            / {product.weight}
+                          </small>
+                        )}
+                      </strong>
+
                       {inCartQty > 0 ? (
                         <div className="stepper">
                           <button onClick={() => changeCart(itemKey, -1)} aria-label="Уменьшить">
@@ -312,20 +391,17 @@ export default function Site() {
               Место, куда<br />
               <em>хочется вернуться</em>
             </h2>
-            <p>Открытая кухня, понятные продукты и тёплый зал. Приходите на неспешный вечер или закажите любимое домой.</p>
+            <p>Открытая кухня, свежая выпечка, натуральные десерты и уютный зал. Приходите на тёплый вечер или заказывайте любимое с доставкой.</p>
             <a href="tel:+79639011818">
               Забронировать стол <Icon name="arrow" />
             </a>
           </div>
           <div className="photo-stack reveal">
             <figure>
-              <img src="/images/signature-table.png" alt="Авторские напитки и блюда ресторана" />
+              <img src="/images/strudel-classic.jpg" alt="Легендарный штрудель" />
             </figure>
             <figure>
-              <img
-                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=88"
-                alt="Интерьер ресторана"
-              />
+              <img src="/images/lemonade-shimmering.jpg" alt="Мерцающий лимонад" />
             </figure>
           </div>
         </section>
@@ -338,17 +414,17 @@ export default function Site() {
                 <em>Попробовать.</em>
               </h2>
             </div>
-            <p>Каждый вечер складывается из деталей: тёплого света, красивой подачи и освежающих напитков.</p>
+            <p>Каждый вечер складывается из деталей: аромата свежей выпечки, шарика мороженого и освежающих лимонадов.</p>
           </div>
           <div className="gallery-window reveal">
             <div className="gallery-track">
               {[
-                ["/images/lemonade-shimmering.jpg", "Мерцающий лимонад", "01"],
-                ["https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=1000&q=88", "Манго-маракуйя", "02"],
-                ["https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1000&q=88", "Освежающий мохито", "03"],
-                ["https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=88", "Тёплый зал", "04"],
-                ["https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1000&q=88", "Ягодный микс", "05"],
-                ["https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=1000&q=88", "Облепиха-апельсин", "06"],
+                ["/images/strudel-classic.jpg", "Горячий штрудель", "01"],
+                ["/images/lemonade-shimmering.jpg", "Мерцающий лимонад", "02"],
+                ["https://images.unsplash.com/photo-1562376552-0d160a2f238d?auto=format&fit=crop&w=1000&q=88", "Венские вафли", "03"],
+                ["https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=1000&q=88", "Манго-маракуйя", "04"],
+                ["https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=1000&q=88", "Нежный чизкейк", "05"],
+                ["https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1000&q=88", "Классический мохито", "06"],
               ].map(([image, title, number], index) => (
                 <figure className={`gallery-card gallery-card-${index + 1}`} key={title}>
                   <img src={image} alt={title} loading="lazy" />
@@ -362,12 +438,12 @@ export default function Site() {
           </div>
           <div className="gallery-ticker" aria-hidden="true">
             <div>
-              <span>Свежие вкусы</span><i>·</i>
-              <span>Авторские лимонады</span><i>·</i>
+              <span>Свежая выпечка</span><i>·</i>
+              <span>Авторские десерты</span><i>·</i>
+              <span>Освежающие лимонады</span><i>·</i>
               <span>Тёплые встречи</span><i>·</i>
-              <span>Каждый день</span><i>·</i>
-              <span>Свежие вкусы</span><i>·</i>
-              <span>Авторские лимонады</span><i>·</i>
+              <span>Свежая выпечка</span><i>·</i>
+              <span>Авторские десерты</span><i>·</i>
             </div>
           </div>
         </section>
@@ -381,9 +457,9 @@ export default function Site() {
           </div>
           <div className="reason-list">
             {[
-              ["01", "Натуральные ингредиенты", "Используем свежие фрукты, ягоды, мяту и натуральные пюре."],
-              ["02", "Авторские рецепты", "Каждый лимонад смешиваем индивидуально прямо перед подачей."],
-              ["03", "Быстрая доставка", "Аккуратно упакуем в герметичные стаканы и привезём холодным."],
+              ["01", "Только свежая выпечка", "Штрудели выпекаем по фирменным рецептам и подаём с настоящим пломбиром."],
+              ["02", "Натуральные ингредиенты", "Фрукты, ягоды, бельгийский шоколад и качественные молочные продукты."],
+              ["03", "Бережная доставка", "Тщательно упаковываем, чтобы десерты оставались тёплыми, а лимонады — холодными."],
             ].map(([number, title, text], index) => (
               <article className="reason reveal" style={{ transitionDelay: `${index * 90}ms` }} key={number}>
                 <span>{number}</span>
@@ -406,21 +482,21 @@ export default function Site() {
             </div>
           </div>
           <blockquote className="reveal">
-            <p>«Очень вкусные лимонады! Мерцающий просто восторг, дети были очарованы, а мохито идеально освежает в любую погоду».</p>
+            <p>«Штрудель с мороженым просто невероятный — горячий, хрустящий, начинки много! И вафли с банановым мороженым стали любимым десертом всей семьи».</p>
             <footer>
-              <b>Алина</b>
+              <b>Елена</b>
               <span>Март 2025</span>
             </footer>
           </blockquote>
           <div className="review-note reveal">
             <span>Более 500 отзывов</span>
-            <p>Спасибо, что выбираете нас для важных и обычных дней.</p>
+            <p>Спасибо, что доверяете нам свои сладкие моменты.</p>
           </div>
         </section>
 
         <section className="delivery reveal">
           <span>Доставка</span>
-          <h2>Свежесть — к вашему столу</h2>
+          <h2>Сладкое и свежее — к вашему столу</h2>
           <p>От 45 минут по Белорецку. Бесплатно при заказе от 1 500 ₽.</p>
           <button onClick={() => document.querySelector("#menu")?.scrollIntoView({ behavior: "smooth" })}>
             Собрать заказ <Icon name="arrow" />
@@ -431,7 +507,7 @@ export default function Site() {
       <footer id="contacts">
         <div>
           <a className="footer-brand" href="#top">7 вкусов</a>
-          <p>Кафе и доставка любимых блюд и напитков</p>
+          <p>Кафе и доставка любимых блюд, десертов и напитков</p>
         </div>
         <div>
           <small>Позвонить</small>
@@ -461,9 +537,9 @@ export default function Site() {
               <div className="empty">
                 <Icon name="cart" size={36} />
                 <h3>Здесь пока пусто</h3>
-                <p>Добавьте освежающие лимонады из меню — всё приготовим с любовью.</p>
+                <p>Добавьте любимые десерты и напитки из меню.</p>
                 <button className="primary" onClick={() => setCartOpen(false)}>
-                  Выбрать напитки
+                  Выбрать позиции
                 </button>
               </div>
             ) : (
@@ -474,7 +550,9 @@ export default function Site() {
                       <img src={item.product.image} alt={item.product.name} />
                       <div>
                         <b>{item.product.name}</b>
-                        <span className="cart-item-size">{item.sizeLabel}</span>
+                        {item.sizeLabel && (
+                          <span className="cart-item-size">{item.sizeLabel}</span>
+                        )}
                         <span>{item.price} ₽</span>
                         <div className="stepper">
                           <button onClick={() => changeCart(item.key, -1)} aria-label="Уменьшить">
@@ -492,7 +570,7 @@ export default function Site() {
 
                 <div className="summary">
                   <p>
-                    <span>Напитки</span>
+                    <span>Позиции</span>
                     <b>{subtotal} ₽</b>
                   </p>
                   <p>
@@ -533,7 +611,7 @@ export default function Site() {
                   <Icon name="check" size={30} />
                 </span>
                 <h2>Заказ оформлен!</h2>
-                <p>Мы получили ваш заказ и уже готовим освежающие напитки.</p>
+                <p>Мы получили ваш заказ и уже готовим десерты и напитки.</p>
                 <button
                   className="primary"
                   onClick={() => {
