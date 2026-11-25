@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-type Category = "Все" | "Лимонады" | "Десерты";
+type Category = "Все" | "Паста" | "Лимонады" | "Десерты";
 
 type SizeOption = {
   label: string;
@@ -10,7 +10,7 @@ type SizeOption = {
 type Product = {
   id: number;
   name: string;
-  category: "Лимонады" | "Десерты";
+  category: "Паста" | "Лимонады" | "Десерты";
   description: string;
   price: number;
   weight?: string;
@@ -20,6 +20,58 @@ type Product = {
 };
 
 const products: Product[] = [
+  // Паста
+  {
+    id: 13,
+    name: "Карбонара",
+    category: "Паста",
+    description: "Классическая паста с обжаренным беконом, нежным сливочным соусом, тёртым пармезаном и микрозеленью",
+    price: 590,
+    weight: "350 г",
+    badge: "Хит",
+    image: "/images/pasta-carbonara.jpg",
+  },
+  {
+    id: 14,
+    name: "Паста с курицей и грибами",
+    category: "Паста",
+    description: "Нежное филе цыплёнка, обжаренные шампиньоны, сливочный соус и ароматные итальянские травы",
+    price: 580,
+    weight: "350 г",
+    badge: "Любимое",
+    image: "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 15,
+    name: "Паста с лангустинами (с чёрными спагетти)",
+    category: "Паста",
+    description: "Эффектные чёрные спагетти с чернилами каракатицы, сочные лангустины, черри и пикантный соус",
+    price: 880,
+    weight: "310 г",
+    badge: "Премиум",
+    image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 16,
+    name: "Паста с кальмарами (с чёрными спагетти)",
+    category: "Паста",
+    description: "Чёрные спагетти с нежным тихоокеанским кальмаром, чесночными нотками и сливочно-томатным соусом",
+    price: 730,
+    weight: "350 г",
+    badge: "Выбор шефа",
+    image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 17,
+    name: "Паста с говядиной",
+    category: "Паста",
+    description: "Томлёная сочная говядина в насыщенном мясном соусе с прованскими травами и выдержанным пармезаном",
+    price: 870,
+    weight: "350 г",
+    badge: "Сытно",
+    image: "https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?auto=format&fit=crop&w=1000&q=88",
+  },
+
   // Лимонады
   {
     id: 1,
@@ -158,7 +210,7 @@ const products: Product[] = [
   },
 ];
 
-const categories: Category[] = ["Все", "Лимонады", "Десерты"];
+const categories: Category[] = ["Все", "Паста", "Лимонады", "Десерты"];
 
 function Icon({ name, size = 20 }: { name: "cart" | "arrow" | "close" | "minus" | "plus" | "check" | "phone" | "pin"; size?: number }) {
   const paths = {
@@ -250,7 +302,7 @@ export default function Site() {
           <span>7</span>
           <b>
             семь вкусов
-            <small>кафе · десерты · лимонады</small>
+            <small>кафе · паста · десерты · лимонады</small>
           </b>
         </a>
         <nav>
@@ -274,7 +326,7 @@ export default function Site() {
               Вкусные встречи<br />
               <em>начинаются здесь</em>
             </h1>
-            <p>Освежающие авторские лимонады, фирменные горячие штрудели, вафли и десерты.</p>
+            <p>Горячая авторская паста, освежающие лимонады, фирменные десерты и уютная атмосфера.</p>
             <div>
               <a className="primary" href="#menu">
                 Выбрать блюда <Icon name="arrow" />
@@ -391,17 +443,17 @@ export default function Site() {
               Место, куда<br />
               <em>хочется вернуться</em>
             </h2>
-            <p>Открытая кухня, свежая выпечка, натуральные десерты и уютный зал. Приходите на тёплый вечер или заказывайте любимое с доставкой.</p>
+            <p>Открытая кухня, горячая паста, свежая выпечка и уютный зал. Приходите на вкусный вечер или заказывайте любимое домой.</p>
             <a href="tel:+79639011818">
               Забронировать стол <Icon name="arrow" />
             </a>
           </div>
           <div className="photo-stack reveal">
             <figure>
-              <img src="/images/strudel-classic.jpg" alt="Легендарный штрудель" />
+              <img src="/images/pasta-carbonara.jpg" alt="Паста Карбонара" />
             </figure>
             <figure>
-              <img src="/images/lemonade-shimmering.jpg" alt="Мерцающий лимонад" />
+              <img src="/images/strudel-classic.jpg" alt="Легендарный штрудель" />
             </figure>
           </div>
         </section>
@@ -414,17 +466,17 @@ export default function Site() {
                 <em>Попробовать.</em>
               </h2>
             </div>
-            <p>Каждый вечер складывается из деталей: аромата свежей выпечки, шарика мороженого и освежающих лимонадов.</p>
+            <p>Каждый вечер складывается из деталей: аппетитной горячей пасты, десертов и освежающих напитков.</p>
           </div>
           <div className="gallery-window reveal">
             <div className="gallery-track">
               {[
-                ["/images/strudel-classic.jpg", "Горячий штрудель", "01"],
-                ["/images/lemonade-shimmering.jpg", "Мерцающий лимонад", "02"],
-                ["https://images.unsplash.com/photo-1562376552-0d160a2f238d?auto=format&fit=crop&w=1000&q=88", "Венские вафли", "03"],
-                ["https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=1000&q=88", "Манго-маракуйя", "04"],
-                ["https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=1000&q=88", "Нежный чизкейк", "05"],
-                ["https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1000&q=88", "Классический мохито", "06"],
+                ["/images/pasta-carbonara.jpg", "Паста Карбонара", "01"],
+                ["/images/strudel-classic.jpg", "Горячий штрудель", "02"],
+                ["/images/lemonade-shimmering.jpg", "Мерцающий лимонад", "03"],
+                ["https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=1000&q=88", "Паста с лангустинами", "04"],
+                ["https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=1000&q=88", "Манго-маракуйя", "05"],
+                ["https://images.unsplash.com/photo-1562376552-0d160a2f238d?auto=format&fit=crop&w=1000&q=88", "Венские вафли", "06"],
               ].map(([image, title, number], index) => (
                 <figure className={`gallery-card gallery-card-${index + 1}`} key={title}>
                   <img src={image} alt={title} loading="lazy" />
@@ -438,12 +490,12 @@ export default function Site() {
           </div>
           <div className="gallery-ticker" aria-hidden="true">
             <div>
+              <span>Горячая паста</span><i>·</i>
               <span>Свежая выпечка</span><i>·</i>
-              <span>Авторские десерты</span><i>·</i>
-              <span>Освежающие лимонады</span><i>·</i>
+              <span>Авторские лимонады</span><i>·</i>
               <span>Тёплые встречи</span><i>·</i>
+              <span>Горячая паста</span><i>·</i>
               <span>Свежая выпечка</span><i>·</i>
-              <span>Авторские десерты</span><i>·</i>
             </div>
           </div>
         </section>
@@ -457,9 +509,9 @@ export default function Site() {
           </div>
           <div className="reason-list">
             {[
-              ["01", "Только свежая выпечка", "Штрудели выпекаем по фирменным рецептам и подаём с настоящим пломбиром."],
-              ["02", "Натуральные ингредиенты", "Фрукты, ягоды, бельгийский шоколад и качественные молочные продукты."],
-              ["03", "Бережная доставка", "Тщательно упаковываем, чтобы десерты оставались тёплыми, а лимонады — холодными."],
+              ["01", "Настоящая итальянская паста", "Готовим с правильной текстурой аль денте, нежными соусами и выдержанным пармезаном."],
+              ["02", "Свежие морепродукты и мясо", "Лангустины, тихоокеанские кальмары, сочная говядина и отборный бекон."],
+              ["03", "Бережная доставка", "Привезём пасту горячей в термоупаковке от 45 минут по Белорецку."],
             ].map(([number, title, text], index) => (
               <article className="reason reveal" style={{ transitionDelay: `${index * 90}ms` }} key={number}>
                 <span>{number}</span>
@@ -482,21 +534,21 @@ export default function Site() {
             </div>
           </div>
           <blockquote className="reveal">
-            <p>«Штрудель с мороженым просто невероятный — горячий, хрустящий, начинки много! И вафли с банановым мороженым стали любимым десертом всей семьи».</p>
+            <p>«Карбонара просто потрясающая — правильный соус, много сыра и хрустящий бекон! А чёрные спагетти с лангустинами выглядят как в дорогом ресторане».</p>
             <footer>
-              <b>Елена</b>
-              <span>Март 2025</span>
+              <b>Михаил</b>
+              <span>Ноябрь 2026</span>
             </footer>
           </blockquote>
           <div className="review-note reveal">
             <span>Более 500 отзывов</span>
-            <p>Спасибо, что доверяете нам свои сладкие моменты.</p>
+            <p>Спасибо, что выбираете «7 вкусов» для вкусных обедов и ужинов.</p>
           </div>
         </section>
 
         <section className="delivery reveal">
           <span>Доставка</span>
-          <h2>Сладкое и свежее — к вашему столу</h2>
+          <h2>Горячее и свежее — к вашему столу</h2>
           <p>От 45 минут по Белорецку. Бесплатно при заказе от 1 500 ₽.</p>
           <button onClick={() => document.querySelector("#menu")?.scrollIntoView({ behavior: "smooth" })}>
             Собрать заказ <Icon name="arrow" />
@@ -537,7 +589,7 @@ export default function Site() {
               <div className="empty">
                 <Icon name="cart" size={36} />
                 <h3>Здесь пока пусто</h3>
-                <p>Добавьте любимые десерты и напитки из меню.</p>
+                <p>Добавьте горячую пасту, десерты или напитки из меню.</p>
                 <button className="primary" onClick={() => setCartOpen(false)}>
                   Выбрать позиции
                 </button>
@@ -611,7 +663,7 @@ export default function Site() {
                   <Icon name="check" size={30} />
                 </span>
                 <h2>Заказ оформлен!</h2>
-                <p>Мы получили ваш заказ и уже готовим десерты и напитки.</p>
+                <p>Мы получили ваш заказ и уже готовим горячие блюда.</p>
                 <button
                   className="primary"
                   onClick={() => {
