@@ -275,12 +275,6 @@ export default function Site({ page }: { page: SitePage }) {
           <div className="hero-cinematic-shade" />
           <div className="hero-cinematic-glow hero-glow-left" />
           <div className="hero-cinematic-glow hero-glow-right" />
-          <div className="hero-cinematic-top">
-            <span>
-              <i /> Ресторан · Белорецк
-            </span>
-            <span>Ежедневно · 10:00–23:00</span>
-          </div>
           <div className="hero-cinematic-center">
             <span className="script">Здесь встречаются</span>
             <h1>
@@ -309,11 +303,6 @@ export default function Site({ page }: { page: SitePage }) {
               </button>
             ))}
           </div>
-          <div className="hero-chef-note">
-            <span className="script">Сегодня рекомендуем</span>
-            <b>Ужин от шефа</b>
-            <small>спросите о специальном меню</small>
-          </div>
           <div className="hero-cinematic-bottom">
             <div>
               <strong>4.9</strong>
@@ -327,28 +316,16 @@ export default function Site({ page }: { page: SitePage }) {
               <Icon name="arrow" size={22} />
             </button>
           </div>
-          <div className="hero-cinematic-seal">
-            <span>7</span>
-            <small>вкусов<br />Белорецка</small>
-          </div>
         </section>
 
         <section className="menu-section" id="menu">
           <div className="container">
-            <div className="section-heading">
-              <div>
-                <span className="section-kicker">Меню кафе · 7 вкусов</span>
-                <h2>
-                  Что будете
-                  <br />
-                  <em>сегодня?</em>
-                </h2>
-              </div>
-              <p>
-                Знакомые блюда и авторские сочетания.
+            <div className="section-heading center-heading">
+              <h2>
+                Что будете
                 <br />
-                Найдите свой вкус — остальное сделаем мы.
-              </p>
+                <em>сегодня?</em>
+              </h2>
             </div>
             <div className="menu-controls">
               <div className="category-bar">
@@ -428,7 +405,6 @@ export default function Site({ page }: { page: SitePage }) {
               </div>
             </div>
             <div className="signature-copy reveal">
-              <span className="section-kicker">Характер нашей кухни</span>
               <span className="script">Знакомое звучит по-новому</span>
               <h2>
                 Один стол.
@@ -476,7 +452,6 @@ export default function Site({ page }: { page: SitePage }) {
           <div className="container">
             <div className="kitchen-showcase-heading reveal">
               <div>
-                <span className="section-kicker">Кухня · бар · атмосфера</span>
                 <h2>
                   Здесь начинается
                   <br />
@@ -590,7 +565,6 @@ export default function Site({ page }: { page: SitePage }) {
         <section className="moments-section">
           <div className="container moments-heading reveal">
             <div>
-              <span className="section-kicker">Атмосфера в деталях</span>
               <h2>
                 Ваши вкусные
                 <br />
@@ -690,7 +664,6 @@ export default function Site({ page }: { page: SitePage }) {
         <section className="how-section delivery-editorial">
           <div className="container delivery-editorial-grid">
             <div className="delivery-heading reveal">
-              <span className="section-kicker">Не просто доставка</span>
               <span className="script">Привезём тепло</span>
               <h2>Из нашей<br />кухни —<br /><em>к вашему столу</em></h2>
               <p>
