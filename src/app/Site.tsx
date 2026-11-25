@@ -1035,15 +1035,15 @@ export default function Site() {
 
       <main id="top">
         <section className="hero">
-          <img src={asset("/images/restaurant-table-hero.png")} alt="Ужин в ресторане Семь вкусов" />
+          <img src={asset("/images/restaurant-table-hero.webp")} alt="Ужин в ресторане Семь вкусов" />
           <div className="hero-shade" />
 
-          {/* Floating animated dishes */}
+          {/* Symmetrical parallel dishes */}
           <div className="hero-dish hero-dish-left" aria-hidden="true">
-            <img src={asset("/images/hero-salad.png")} alt="Салат Цезарь с лососем" />
+            <img src={asset("/images/hero-salad.webp")} alt="Салат Цезарь с лососем" />
           </div>
           <div className="hero-dish hero-dish-right" aria-hidden="true">
-            <img src={asset("/images/hero-pizza.png")} alt="Пицца Пепперони" />
+            <img src={asset("/images/hero-pizza.webp")} alt="Пицца Пепперони" />
           </div>
 
           <div className="hero-copy">
@@ -1274,7 +1274,7 @@ export default function Site() {
         <section
           className="delivery reveal"
           style={{
-            backgroundImage: `linear-gradient(90deg,rgba(9,36,28,.88),rgba(9,36,28,.25)), url(${asset('/images/editorial-menu-table.png')})`,
+            backgroundImage: `linear-gradient(90deg,rgba(9,36,28,.88),rgba(9,36,28,.25)), url(${asset('/images/editorial-menu-table.webp')})`,
           }}
         >
           <span>Доставка</span>
