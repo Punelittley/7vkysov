@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-type Category = "Все" | "Горячее" | "Паста" | "Лимонады" | "Десерты";
+type Category = "Все" | "Горячее" | "Паста" | "Авторский чай" | "Лимонады" | "Десерты";
 
 type SizeOption = {
   label: string;
@@ -10,7 +10,7 @@ type SizeOption = {
 type Product = {
   id: number;
   name: string;
-  category: "Горячее" | "Паста" | "Лимонады" | "Десерты";
+  category: "Горячее" | "Паста" | "Авторский чай" | "Лимонады" | "Десерты";
   description: string;
   price: number;
   weight?: string;
@@ -20,6 +20,72 @@ type Product = {
 };
 
 const products: Product[] = [
+  // Авторский чай
+  {
+    id: 28,
+    name: "Облепиха-апельсин",
+    category: "Авторский чай",
+    description: "Яркий витаминный чай с алтайской облепихой, дольками свежего апельсина и лёгкими цитрусовыми нотками",
+    price: 170,
+    badge: "Хит",
+    image: "/images/tea-seabuckthorn.jpg",
+    sizes: [
+      { label: "250 мл", price: 170 },
+      { label: "600 мл", price: 370 },
+    ],
+  },
+  {
+    id: 29,
+    name: "Облепиха-груша",
+    category: "Авторский чай",
+    description: "Согревающий натуральный чай с ягодами облепихи, сладкой десертной грушей и пряностями",
+    price: 170,
+    badge: "Выбор гостей",
+    image: "/images/tea-seabuckthorn.jpg",
+    sizes: [
+      { label: "250 мл", price: 170 },
+      { label: "600 мл", price: 370 },
+    ],
+  },
+  {
+    id: 30,
+    name: "Облепиха-смородина",
+    category: "Авторский чай",
+    description: "Насыщенный чай с облепихой и чёрной смородиной, дарящий глубокий рубиново-золотой цвет и ягодный аромат",
+    price: 170,
+    image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=1000&q=88",
+    sizes: [
+      { label: "250 мл", price: 170 },
+      { label: "600 мл", price: 370 },
+    ],
+  },
+  {
+    id: 31,
+    name: "Малина-облепиха",
+    category: "Авторский чай",
+    description: "Нежное сочетание сладкой спелой малины и целебной облепихи для уюта и тепла в любой день",
+    price: 170,
+    badge: "Уютный",
+    image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1000&q=88",
+    sizes: [
+      { label: "250 мл", price: 170 },
+      { label: "600 мл", price: 370 },
+    ],
+  },
+  {
+    id: 32,
+    name: "Лесные ягоды",
+    category: "Авторский чай",
+    description: "Ароматный сбор спелых лесных ягод: черника, брусника, клюква и малина с душистыми травами",
+    price: 170,
+    badge: "Ароматный",
+    image: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=1000&q=88",
+    sizes: [
+      { label: "250 мл", price: 170 },
+      { label: "600 мл", price: 370 },
+    ],
+  },
+
   // Горячее
   {
     id: 18,
@@ -307,7 +373,7 @@ const products: Product[] = [
   },
 ];
 
-const categories: Category[] = ["Все", "Горячее", "Паста", "Лимонады", "Десерты"];
+const categories: Category[] = ["Все", "Горячее", "Паста", "Авторский чай", "Лимонады", "Десерты"];
 
 function Icon({ name, size = 20 }: { name: "cart" | "arrow" | "close" | "minus" | "plus" | "check" | "phone" | "pin"; size?: number }) {
   const paths = {
@@ -399,7 +465,7 @@ export default function Site() {
           <span>7</span>
           <b>
             семь вкусов
-            <small>кафе · горячее · паста · десерты</small>
+            <small>кафе · чай · горячее · паста</small>
           </b>
         </a>
         <nav>
@@ -423,7 +489,7 @@ export default function Site() {
               Вкусные встречи<br />
               <em>начинаются здесь</em>
             </h1>
-            <p>Фирменные горячие блюда, авторская паста, освежающие лимонады и домашние десерты.</p>
+            <p>Согревающий авторский чай, сочные горячие блюда, домашняя паста и свежие десерты.</p>
             <div>
               <a className="primary" href="#menu">
                 Выбрать блюда <Icon name="arrow" />
@@ -540,17 +606,17 @@ export default function Site() {
               Место, куда<br />
               <em>хочется вернуться</em>
             </h2>
-            <p>Открытая кухня, сочные стейки, домашняя паста, свежая выпечка и уютный зал. Приходите на тёплый вечер или заказывайте любимое домой.</p>
+            <p>Открытая кухня, согревающий чай, свежая выпечка, сочные горячие блюда и уютный зал. Приходите на тёплый вечер или заказывайте любимое домой.</p>
             <a href="tel:+79639011818">
               Забронировать стол <Icon name="arrow" />
             </a>
           </div>
           <div className="photo-stack reveal">
             <figure>
-              <img src="/images/salmon-steak.jpg" alt="Стейк из лосося" />
+              <img src="/images/tea-seabuckthorn.jpg" alt="Авторский облепиховый чай" />
             </figure>
             <figure>
-              <img src="/images/pasta-carbonara.jpg" alt="Паста Карбонара" />
+              <img src="/images/salmon-steak.jpg" alt="Стейк из лосося" />
             </figure>
           </div>
         </section>
@@ -563,17 +629,17 @@ export default function Site() {
                 <em>Попробовать.</em>
               </h2>
             </div>
-            <p>Каждый вечер складывается из деталей: аппетитного стейка, горячей пасты, десертов и освежающих напитков.</p>
+            <p>Каждый вечер складывается из деталей: аромата натурального чая, аппетитных блюд и душевных встреч.</p>
           </div>
           <div className="gallery-window reveal">
             <div className="gallery-track">
               {[
-                ["/images/salmon-steak.jpg", "Стейк из лосося", "01"],
-                ["/images/pasta-carbonara.jpg", "Паста Карбонара", "02"],
-                ["/images/strudel-classic.jpg", "Горячий штрудель", "03"],
-                ["/images/lemonade-shimmering.jpg", "Мерцающий лимонад", "04"],
-                ["https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=1000&q=88", "Цыпленок по-тирольски", "05"],
-                ["https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1000&q=88", "Оджахури со свининой", "06"],
+                ["/images/tea-seabuckthorn.jpg", "Авторский чай", "01"],
+                ["/images/salmon-steak.jpg", "Стейк из лосося", "02"],
+                ["/images/pasta-carbonara.jpg", "Паста Карбонара", "03"],
+                ["/images/strudel-classic.jpg", "Горячий штрудель", "04"],
+                ["/images/lemonade-shimmering.jpg", "Мерцающий лимонад", "05"],
+                ["https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=1000&q=88", "Цыпленок по-тирольски", "06"],
               ].map(([image, title, number], index) => (
                 <figure className={`gallery-card gallery-card-${index + 1}`} key={title}>
                   <img src={image} alt={title} loading="lazy" />
@@ -587,12 +653,12 @@ export default function Site() {
           </div>
           <div className="gallery-ticker" aria-hidden="true">
             <div>
-              <span>Стейки и горячее</span><i>·</i>
-              <span>Горячая паста</span><i>·</i>
+              <span>Авторский чай</span><i>·</i>
+              <span>Горячие блюда</span><i>·</i>
               <span>Свежая выпечка</span><i>·</i>
-              <span>Авторские лимонады</span><i>·</i>
-              <span>Стейки и горячее</span><i>·</i>
-              <span>Горячая паста</span><i>·</i>
+              <span>Тёплые встречи</span><i>·</i>
+              <span>Авторский чай</span><i>·</i>
+              <span>Горячие блюда</span><i>·</i>
             </div>
           </div>
         </section>
@@ -606,9 +672,9 @@ export default function Site() {
           </div>
           <div className="reason-list">
             {[
-              ["01", "Мясо и рыба высшего качества", "Отборный лосось, нежная говядина, судак и фермерская птица."],
-              ["02", "Готовим прямо под ваш заказ", "Никаких разогретых полуфабрикатов — только свежесть с огня и печи."],
-              ["03", "Термоупаковка и быстрая доставка", "Блюда доставляются по Белорецку горячими и сочными, как при подаче в зале."],
+              ["01", "Натуральные ягоды и фрукты", "Завариваем чай только из натуральной облепихи, груши, малины и смородины."],
+              ["02", "Готовим прямо под ваш заказ", "Свежие блюда, сочные стейки и горячие напитки с пылу с жару."],
+              ["03", "Бережная термодоставка", "Привезём чай и горячие блюда в термоупаковке от 45 минут по Белорецку."],
             ].map(([number, title, text], index) => (
               <article className="reason reveal" style={{ transitionDelay: `${index * 90}ms` }} key={number}>
                 <span>{number}</span>
@@ -631,21 +697,21 @@ export default function Site() {
             </div>
           </div>
           <blockquote className="reveal">
-            <p>«Стейк из лосося просто тает во рту — нежнейший, с соусом наршараб великолепно сочетается! И оджахури очень сытное, порции честные и большие».</p>
+            <p>«Облепиховый чай с апельсином — это невероятно вкусно и ароматно! В холодную погоду согревает моментально, обязательно берите большой чайник на двоих».</p>
             <footer>
-              <b>Дмитрий</b>
+              <b>Ольга</b>
               <span>Ноябрь 2026</span>
             </footer>
           </blockquote>
           <div className="review-note reveal">
             <span>Более 500 отзывов</span>
-            <p>Спасибо, что выбираете «7 вкусов» для важных и душевных ужинов.</p>
+            <p>Спасибо, что выбираете «7 вкусов» для душевных чаепитий и встреч.</p>
           </div>
         </section>
 
         <section className="delivery reveal">
           <span>Доставка</span>
-          <h2>Горячее и свежее — к вашему столу</h2>
+          <h2>Согревающее и вкусное — к вашему столу</h2>
           <p>От 45 минут по Белорецку. Бесплатно при заказе от 1 500 ₽.</p>
           <button onClick={() => document.querySelector("#menu")?.scrollIntoView({ behavior: "smooth" })}>
             Собрать заказ <Icon name="arrow" />
@@ -656,7 +722,7 @@ export default function Site() {
       <footer id="contacts">
         <div>
           <a className="footer-brand" href="#top">7 вкусов</a>
-          <p>Кафе и доставка любимых блюд, десертов и напитков</p>
+          <p>Кафе и доставка любимых блюд, чая, десертов и напитков</p>
         </div>
         <div>
           <small>Позвонить</small>
@@ -686,7 +752,7 @@ export default function Site() {
               <div className="empty">
                 <Icon name="cart" size={36} />
                 <h3>Здесь пока пусто</h3>
-                <p>Добавьте горячие блюда, пасту, десерты или напитки из меню.</p>
+                <p>Добавьте ароматный чай, горячие блюда или десерты из меню.</p>
                 <button className="primary" onClick={() => setCartOpen(false)}>
                   Выбрать позиции
                 </button>
@@ -760,7 +826,7 @@ export default function Site() {
                   <Icon name="check" size={30} />
                 </span>
                 <h2>Заказ оформлен!</h2>
-                <p>Мы получили ваш заказ и уже готовим горячие блюда.</p>
+                <p>Мы получили ваш заказ и уже завариваем чай и готовим блюда.</p>
                 <button
                   className="primary"
                   onClick={() => {
