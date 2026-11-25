@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-type Category = "Все" | "Закуски" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
+type Category = "Все" | "Закуски" | "Салаты" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
 
 type SizeOption = {
   label: string;
@@ -10,7 +10,7 @@ type SizeOption = {
 type Product = {
   id: number;
   name: string;
-  category: "Закуски" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
+  category: "Закуски" | "Салаты" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
   description: string;
   price: number;
   weight?: string;
@@ -20,6 +20,98 @@ type Product = {
 };
 
 const products: Product[] = [
+  // Салаты
+  {
+    id: 57,
+    name: "Цезарь с курицей",
+    category: "Салаты",
+    description: "Хрустящие листья салата, сочное куриное филе, томаты черри, золотистые крутоны, сыр пармезан и соус Цезарь",
+    price: 650,
+    weight: "200 г",
+    badge: "Классика",
+    image: "https://images.unsplash.com/photo-1546793665-c74683f339c1?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 58,
+    name: "Цезарь с лангустинами",
+    category: "Салаты",
+    description: "Обжаренные лангустины, листья салата, томаты черри, хрустящие крутоны, сыр пармезан и фирменный соус Цезарь",
+    price: 740,
+    weight: "200 г",
+    badge: "Изысканно",
+    image: "https://images.unsplash.com/photo-1551248429-40975aa4de74?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 59,
+    name: "Цезарь с лососем",
+    category: "Салаты",
+    description: "Нежнейший слабосоленый лосось, хрустящие листья салата, томаты черри, крутоны, сыр пармезан и авторский соус Цезарь",
+    price: 740,
+    weight: "200 г",
+    badge: "Хит",
+    image: "/images/salad-caesar-salmon.jpg",
+  },
+  {
+    id: 60,
+    name: "Греческий",
+    category: "Салаты",
+    description: "Свежие огурцы, спелые томаты, сладкий болгарский перец, красный лук, маслины, сыр фета и оливковое масло с орегано",
+    price: 520,
+    weight: "200 г",
+    badge: "Свежее",
+    image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 61,
+    name: "Салат с говядиной",
+    category: "Салаты",
+    description: "Нежная говядина, свежие огурцы, томаты, болгарский перец, обжаренные грибы, микс листьев салата и масляная заправка",
+    price: 620,
+    weight: "160 г",
+    badge: "Сытно",
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 62,
+    name: "Салат с кальмарами",
+    category: "Салаты",
+    description: "Нежный кальмар, спелые томаты, сладкий болгарский перец, свежие листья салата и ароматная масляная заправка",
+    price: 540,
+    weight: "240 г",
+    badge: "Морепродукты",
+    image: "https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 63,
+    name: "Марго",
+    category: "Салаты",
+    description: "Копченая куриная грудка, сладкий болгарский перец, консервированные ананасы, пекинская капуста, голландский сыр и маслины",
+    price: 540,
+    weight: "200 г",
+    badge: "Фирменный",
+    image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 64,
+    name: "Поке с лососем",
+    category: "Салаты",
+    description: "Свежий лосось, рис, бобы эдамаме, спелый томат, свежий огурец, яйцо и фирменная заправка",
+    price: 740,
+    weight: "330 г",
+    badge: "Тренд",
+    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 65,
+    name: "Поке с цыпленком",
+    category: "Салаты",
+    description: "Нежное куриное филе, рис, свежий огурец, бобы эдамаме, томаты, яйцо и авторский соус",
+    price: 560,
+    weight: "350 г",
+    badge: "Популярное",
+    image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1000&q=88",
+  },
+
   // Закуски
   {
     id: 50,
@@ -615,7 +707,7 @@ const products: Product[] = [
   },
 ];
 
-const categories: Category[] = ["Все", "Закуски", "Горячее", "Паста", "Кофе", "Коктейли и Овершейки", "Авторский чай", "Классический чай", "Лимонады", "Десерты"];
+const categories: Category[] = ["Все", "Закуски", "Салаты", "Горячее", "Паста", "Кофе", "Коктейли и Овершейки", "Авторский чай", "Классический чай", "Лимонады", "Десерты"];
 
 function Icon({ name, size = 20 }: { name: "cart" | "arrow" | "close" | "minus" | "plus" | "check" | "phone" | "pin"; size?: number }) {
   const paths = {
