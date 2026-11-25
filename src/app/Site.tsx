@@ -1,5 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 
+const asset = (url: string) => {
+  if (!url) return "";
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  const base = import.meta.env.BASE_URL || "/";
+  const cleanBase = base.endsWith("/") ? base : `${base}/`;
+  const cleanUrl = url.startsWith("/") ? url.slice(1) : url;
+  return `${cleanBase}${cleanUrl}`;
+};
+
 type Category = "Все" | "Пицца" | "Закуски" | "Салаты" | "Супы" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
 
 type SizeOption = {
@@ -1026,15 +1035,15 @@ export default function Site() {
 
       <main id="top">
         <section className="hero">
-          <img src="/images/restaurant-table-hero.png" alt="Ужин в ресторане Семь вкусов" />
+          <img src={asset("/images/restaurant-table-hero.png")} alt="Ужин в ресторане Семь вкусов" />
           <div className="hero-shade" />
 
           {/* Floating animated dishes */}
           <div className="hero-dish hero-dish-left" aria-hidden="true">
-            <img src="/images/hero-salad.png" alt="Салат Цезарь с лососем" />
+            <img src={asset("/images/hero-salad.png")} alt="Салат Цезарь с лососем" />
           </div>
           <div className="hero-dish hero-dish-right" aria-hidden="true">
-            <img src="/images/hero-pizza.png" alt="Пицца Пепперони" />
+            <img src={asset("/images/hero-pizza.png")} alt="Пицца Пепперони" />
           </div>
 
           <div className="hero-copy">
@@ -1092,7 +1101,7 @@ export default function Site() {
               return (
                 <article className="product-card reveal" key={product.id}>
                   <div className="product-image">
-                    <img src={product.image} alt={product.name} />
+                    <img src={asset(product.image)} alt={product.name} />
                     {product.badge && <span>{product.badge}</span>}
                   </div>
                   <div className="product-info">
@@ -1166,10 +1175,10 @@ export default function Site() {
           </div>
           <div className="photo-stack reveal">
             <figure>
-              <img src="/images/overshakes.jpg" alt="Праздничные овершейки" />
+              <img src={asset("/images/overshakes.jpg")} alt="Праздничные овершейки" />
             </figure>
             <figure>
-              <img src="/images/tea-classic.jpg" alt="Классический чай" />
+              <img src={asset("/images/tea-classic.jpg")} alt="Классический чай" />
             </figure>
           </div>
         </section>
@@ -1195,7 +1204,7 @@ export default function Site() {
                 ["/images/strudel-classic.jpg", "Горячий штрудель", "06"],
               ].map(([image, title, number], index) => (
                 <figure className={`gallery-card gallery-card-${index + 1}`} key={title}>
-                  <img src={image} alt={title} loading="lazy" />
+                  <img src={asset(image)} alt={title} loading="lazy" />
                   <figcaption>
                     <span>{number}</span>
                     <b>{title}</b>
@@ -1262,7 +1271,12 @@ export default function Site() {
           </div>
         </section>
 
-        <section className="delivery reveal">
+        <section
+          className="delivery reveal"
+          style={{
+            backgroundImage: `linear-gradient(90deg,rgba(9,36,28,.88),rgba(9,36,28,.25)), url(${asset('/images/editorial-menu-table.png')})`,
+          }}
+        >
           <span>Доставка</span>
           <h2>Праздник и свежесть — к вашему столу</h2>
           <p>От 45 минут по Белорецку. Бесплатно при заказе от 1 500 ₽.</p>
@@ -1315,7 +1329,7 @@ export default function Site() {
                 <div className="cart-list">
                   {cartItems.map((item) => (
                     <div className="cart-item" key={item.key}>
-                      <img src={item.product.image} alt={item.product.name} />
+                      <img src={asset(item.product.image)} alt={item.product.name} />
                       <div>
                         <b>{item.product.name}</b>
                         {item.sizeLabel && (
