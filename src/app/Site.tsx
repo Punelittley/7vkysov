@@ -1028,6 +1028,15 @@ export default function Site() {
         <section className="hero">
           <img src="/images/restaurant-table-hero.png" alt="Ужин в ресторане Семь вкусов" />
           <div className="hero-shade" />
+
+          {/* Floating animated dishes */}
+          <div className="hero-dish hero-dish-left" aria-hidden="true">
+            <img src="/images/hero-salad.png" alt="Салат Цезарь с лососем" />
+          </div>
+          <div className="hero-dish hero-dish-right" aria-hidden="true">
+            <img src="/images/hero-pizza.png" alt="Пицца Пепперони" />
+          </div>
+
           <div className="hero-copy">
             <h1>
               Вкусные встречи<br />
