@@ -1015,25 +1015,32 @@ export default function Site() {
     <div className="site-shell">
       <header className="topbar">
         <a className="brand" href="#top">
-          <span>7</span>
-          <b>
-            семь вкусов
-            <small>уютно · вкусно · по‑домашнему</small>
-          </b>
+          <img src={asset("/images/logo.webp")} alt="Кафе 7 вкусов" className="brand-logo-img" />
+          <div className="brand-info">
+            <b>7 вкусов</b>
+            <small>уют · вкус · настроение</small>
+          </div>
         </a>
         <nav>
           <a href="#menu">Меню</a>
           <a href="#about">О нас</a>
           <a href="#contacts">Контакты</a>
-          <span style={{ fontSize: "12px", color: "var(--green)", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "4px" }}>
-            <Icon name="pin" size={14} /> ул. Ленина, 38
-          </span>
         </nav>
-        <button className="cart-button" onClick={() => setCartOpen(true)}>
-          <Icon name="cart" />
-          <span>Корзина</span>
-          {count > 0 && <b>{count}</b>}
-        </button>
+        <div className="topbar-actions">
+          <a href="#contacts" className="topbar-badge topbar-badge-address">
+            <Icon name="pin" size={14} />
+            <span>ул. Ленина, 38</span>
+          </a>
+          <a href="tel:+79639011818" className="topbar-badge topbar-badge-phone">
+            <Icon name="phone" size={14} />
+            <span>8 963 901-18-18</span>
+          </a>
+          <button className="cart-button" onClick={() => setCartOpen(true)} aria-label="Корзина">
+            <Icon name="cart" size={17} />
+            <span>Корзина</span>
+            {count > 0 && <b>{count}</b>}
+          </button>
+        </div>
       </header>
 
       <main id="top">
@@ -1316,7 +1323,10 @@ export default function Site() {
 
       <footer id="contacts">
         <div>
-          <a className="footer-brand" href="#top">7 вкусов</a>
+          <a className="footer-brand" href="#top" style={{ display: "flex", alignItems: "center", gap: "12px", textDecoration: "none" }}>
+            <img src={asset("/images/logo.webp")} alt="7 вкусов" style={{ width: "46px", height: "46px", borderRadius: "50%", background: "white", padding: "2px" }} />
+            <span>7 вкусов</span>
+          </a>
           <p>Кафе «7 вкусов» — уютно, вкусно, по‑домашнему</p>
           <span style={{ display: "block", marginTop: "10px", lineHeight: "1.7", color: "rgba(255,255,255,.7)" }}>
             🥗 Бизнес-ланч с 12:00 до 15:00 (будни)<br />
