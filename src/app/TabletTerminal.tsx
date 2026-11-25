@@ -1,22 +1,18 @@
 import { useState, useEffect } from "react";
-import { asset, type RealOrder } from "./Site";
+import { type RealOrder } from "./Site";
 
 const MASTER_PIN = "7777";
 
 export default function TabletTerminal({ onExit }: { onExit: () => void }) {
-  // Authentication State
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     return sessionStorage.getItem("7vkysov_tablet_auth") === "true";
   });
   const [pinInput, setPinInput] = useState<string>("");
   const [pinError, setPinError] = useState<boolean>(false);
 
-  // Real Orders State
   const [orders, setOrders] = useState<RealOrder[]>([]);
-  const [filter, setFilter] = useState<"all" | "new" | "cooking" | "delivering" | "completed">("all");
-  const [soundAlert, setSoundAlert] = useState<boolean>(true);
+  const [filter, setFilter] = useState<"all" | "new" | "accepted" | "rejected">("all");
 
-  // Load orders from localStorage
   const loadOrders = () => {
     try {
       const stored = localStorage.getItem("7vkysov_real_orders");
@@ -26,19 +22,15 @@ export default function TabletTerminal({ onExit }: { onExit: () => void }) {
         setOrders([]);
       }
     } catch (e) {
-      console.error("Error loading real orders:", e);
+      console.error(e);
     }
   };
 
   useEffect(() => {
     loadOrders();
-    // Listen for storage events across tabs
     const handleStorageChange = () => loadOrders();
     window.addEventListener("storage", handleStorageChange);
-
-    // Also poll every 2 seconds for real-time order arrival
     const interval = setInterval(loadOrders, 2000);
-
     return () => {
       window.removeEventListener("storage", handleStorageChange);
       clearInterval(interval);
@@ -58,9 +50,7 @@ export default function TabletTerminal({ onExit }: { onExit: () => void }) {
         setPinInput("");
       } else {
         setPinError(true);
-        setTimeout(() => {
-          setPinInput("");
-        }, 600);
+        setTimeout(() => setPinInput(""), 500);
       }
     }
   };
@@ -81,9 +71,13 @@ export default function TabletTerminal({ onExit }: { onExit: () => void }) {
     setPinInput("");
   };
 
-  // Change status of real order
-  const updateStatus = (orderId: string, newStatus: RealOrder["status"]) => {
-    const updated = orders.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o));
+  const setOrderStatus = (orderId: string, status: "new" | "accepted" | "rejected") => {
+    const updated = orders.map((o) => {
+      if (o.id === orderId) {
+        return { ...o, status: status as any };
+      }
+      return o;
+    });
     setOrders(updated);
     try {
       localStorage.setItem("7vkysov_real_orders", JSON.stringify(updated));
@@ -92,9 +86,8 @@ export default function TabletTerminal({ onExit }: { onExit: () => void }) {
     }
   };
 
-  // Delete single order
   const deleteOrder = (orderId: string) => {
-    if (!confirm(`Удалить заказ ${orderId} из списка?`)) return;
+    if (!confirm(`Удалить заказ ${orderId}?`)) return;
     const updated = orders.filter((o) => o.id !== orderId);
     setOrders(updated);
     try {
@@ -104,26 +97,23 @@ export default function TabletTerminal({ onExit }: { onExit: () => void }) {
     }
   };
 
-  // Clear all completed orders
-  const clearCompleted = () => {
-    if (!confirm("Очистить все завершённые заказы?")) return;
-    const updated = orders.filter((o) => o.status !== "completed");
-    setOrders(updated);
+  const clearAllOrders = () => {
+    if (!confirm("Очистить все заказы?")) return;
+    setOrders([]);
     try {
-      localStorage.setItem("7vkysov_real_orders", JSON.stringify(updated));
+      localStorage.removeItem("7vkysov_real_orders");
     } catch (e) {
       console.error(e);
     }
   };
 
-  // Create test demo order directly from terminal for testing
   const createTestOrder = () => {
-    const sampleOrder: RealOrder = {
+    const testOrder: RealOrder = {
       id: `№${Math.floor(100 + Math.random() * 900)}`,
-      customerName: "Елена Смирнова",
+      customerName: "Иван Иванов",
       customerPhone: "+7 963 901-18-18",
-      customerAddress: "ул. Ленина, 38, кв. 12",
-      paymentMethod: "При получении (наличные или карта)",
+      customerAddress: "ул. Ленина, 38, кв. 5",
+      paymentMethod: "При получении",
       items: [
         {
           id: 72,
@@ -145,14 +135,14 @@ export default function TabletTerminal({ onExit }: { onExit: () => void }) {
         },
       ],
       subtotal: 1330,
-      delivery: 199,
-      total: 1529,
+      delivery: 0,
+      total: 1330,
       createdAt: new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" }),
       timestamp: Date.now(),
       status: "new",
     };
 
-    const updated = [sampleOrder, ...orders];
+    const updated = [testOrder, ...orders];
     setOrders(updated);
     try {
       localStorage.setItem("7vkysov_real_orders", JSON.stringify(updated));
@@ -161,60 +151,53 @@ export default function TabletTerminal({ onExit }: { onExit: () => void }) {
     }
   };
 
-  // Filtered orders
   const filteredOrders = orders.filter((o) => {
     if (filter === "all") return true;
-    return o.status === filter;
+    if (filter === "accepted") return o.status === "cooking" || o.status === "completed" || (o.status as any) === "accepted";
+    if (filter === "rejected") return (o.status as any) === "rejected" || (o.status as any) === "cancelled";
+    return o.status === "new";
   });
 
   const countNew = orders.filter((o) => o.status === "new").length;
-  const countInProgress = orders.filter((o) => o.status === "cooking" || o.status === "delivering").length;
-  const totalRevenue = orders.reduce((sum, o) => sum + o.total, 0);
 
-  // 1. PIN Lock Screen
+  // 1. PIN Lock Screen (Simple, no emojis, professional)
   if (!isAuthenticated) {
     return (
-      <div className="tablet-lock-screen">
-        <div className="tablet-lock-card">
-          <div className="lock-header">
-            <img src={asset("/images/logo.webp")} alt="7 вкусов" className="lock-logo" />
-            <h2>Терминал заказов</h2>
-            <p>Кафе «7 вкусов» · Заказы из корзины</p>
-            <div className="lock-secure-badge">
-              <span>🔒 Страница зашифрована PIN-кодом</span>
-            </div>
+      <div className="terminal-auth-wrap">
+        <div className="terminal-auth-box">
+          <div className="auth-brand-title">Кафе «7 вкусов»</div>
+          <div className="auth-subtitle">Терминал заказов (tabletzakazeda)</div>
+
+          <div className="pin-display">
+            <span className={`dot ${pinInput.length >= 1 ? "filled" : ""} ${pinError ? "err" : ""}`} />
+            <span className={`dot ${pinInput.length >= 2 ? "filled" : ""} ${pinError ? "err" : ""}`} />
+            <span className={`dot ${pinInput.length >= 3 ? "filled" : ""} ${pinError ? "err" : ""}`} />
+            <span className={`dot ${pinInput.length >= 4 ? "filled" : ""} ${pinError ? "err" : ""}`} />
           </div>
 
-          <div className="pin-dots-container">
-            <div className={`pin-dot ${pinInput.length >= 1 ? "active" : ""} ${pinError ? "error" : ""}`} />
-            <div className={`pin-dot ${pinInput.length >= 2 ? "active" : ""} ${pinError ? "error" : ""}`} />
-            <div className={`pin-dot ${pinInput.length >= 3 ? "active" : ""} ${pinError ? "error" : ""}`} />
-            <div className={`pin-dot ${pinInput.length >= 4 ? "active" : ""} ${pinError ? "error" : ""}`} />
-          </div>
+          {pinError && <div className="pin-err-text">Неверный код (пароль: 7777)</div>}
 
-          {pinError && <div className="pin-error-msg">Неверный PIN-код (по умолчанию: 7777)</div>}
-
-          <div className="pin-keypad">
-            {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((digit) => (
-              <button key={digit} className="key-btn" onClick={() => handlePinPress(digit)}>
-                {digit}
+          <div className="terminal-keypad">
+            {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((num) => (
+              <button key={num} type="button" className="t-key" onClick={() => handlePinPress(num)}>
+                {num}
               </button>
             ))}
-            <button className="key-btn special" onClick={handlePinClear}>
-              C
+            <button type="button" className="t-key action" onClick={handlePinClear}>
+              Сброс
             </button>
-            <button className="key-btn" onClick={() => handlePinPress("0")}>
+            <button type="button" className="t-key" onClick={() => handlePinPress("0")}>
               0
             </button>
-            <button className="key-btn special" onClick={handlePinBackspace}>
-              ⌫
+            <button type="button" className="t-key action" onClick={handlePinBackspace}>
+              Стереть
             </button>
           </div>
 
-          <div className="lock-footer">
-            <small>Мастер-код: <b>7777</b></small>
-            <button className="exit-btn" onClick={onExit}>
-              ← Вернуться на сайт кафе
+          <div className="auth-bottom">
+            <span>Код доступа: 7777</span>
+            <button type="button" className="link-button" onClick={onExit}>
+              Перейти на сайт
             </button>
           </div>
         </div>
@@ -222,231 +205,207 @@ export default function TabletTerminal({ onExit }: { onExit: () => void }) {
     );
   }
 
-  // 2. Real Orders Tablet Screen
+  // 2. Simple, functional tablet order list (No emojis, no AI-decorations)
   return (
-    <div className="tablet-orders-shell">
-      {/* Top Header */}
-      <header className="tablet-orders-header">
-        <div className="toh-brand">
-          <img src={asset("/images/logo.webp")} alt="7 вкусов" className="toh-logo" />
-          <div>
-            <b>Кафе «7 вкусов»</b>
-            <span>Панель заказов из корзины (tabletzakazeda)</span>
-          </div>
+    <div className="pos-wrap">
+      {/* Top Navbar */}
+      <header className="pos-topbar">
+        <div className="pos-logo-area">
+          <h1 className="pos-title">7 вкусов — Заказы</h1>
+          <span className="pos-badge">Терминал кафе</span>
         </div>
 
-        {/* Status Filter Badges */}
-        <div className="toh-tabs">
+        <div className="pos-filters">
           <button
-            className={`toh-tab ${filter === "all" ? "active" : ""}`}
+            type="button"
+            className={`pos-tab ${filter === "all" ? "active" : ""}`}
             onClick={() => setFilter("all")}
           >
             Все ({orders.length})
           </button>
           <button
-            className={`toh-tab new-tab ${filter === "new" ? "active" : ""}`}
+            type="button"
+            className={`pos-tab ${filter === "new" ? "active" : ""}`}
             onClick={() => setFilter("new")}
           >
-            🟡 Новые ({countNew})
+            Новые ({countNew})
           </button>
           <button
-            className={`toh-tab ${filter === "cooking" ? "active" : ""}`}
-            onClick={() => setFilter("cooking")}
+            type="button"
+            className={`pos-tab ${filter === "accepted" ? "active" : ""}`}
+            onClick={() => setFilter("accepted")}
           >
-            👨‍🍳 В готовке
+            Принятые
           </button>
           <button
-            className={`toh-tab ${filter === "delivering" ? "active" : ""}`}
-            onClick={() => setFilter("delivering")}
+            type="button"
+            className={`pos-tab ${filter === "rejected" ? "active" : ""}`}
+            onClick={() => setFilter("rejected")}
           >
-            🚗 Доставка
-          </button>
-          <button
-            className={`toh-tab ${filter === "completed" ? "active" : ""}`}
-            onClick={() => setFilter("completed")}
-          >
-            ✅ Выполнены
+            Отказ
           </button>
         </div>
 
-        {/* Controls */}
-        <div className="toh-actions">
-          <button
-            className={`toh-sound-btn ${soundAlert ? "active" : ""}`}
-            onClick={() => setSoundAlert(!soundAlert)}
-            title="Звук уведомлений"
-          >
-            {soundAlert ? "🔔" : "🔕"}
+        <div className="pos-actions">
+          <button type="button" className="pos-btn" onClick={createTestOrder} title="Создать тестовый заказ для проверки">
+            + Тестовый заказ
           </button>
-          <button className="toh-btn" onClick={createTestOrder} title="Создать тестовый заказ для проверки">
-            ➕ Тест
+          {orders.length > 0 && (
+            <button type="button" className="pos-btn danger" onClick={clearAllOrders}>
+              Очистить
+            </button>
+          )}
+          <button type="button" className="pos-btn" onClick={handleLock}>
+            Блокировка
           </button>
-          <button className="toh-btn lock" onClick={handleLock} title="Заблокировать">
-            🔒 Заблокировать
-          </button>
-          <button className="toh-btn exit" onClick={onExit} title="На главный сайт">
-            🌐 На сайт
+          <button type="button" className="pos-btn dark" onClick={onExit}>
+            На сайт
           </button>
         </div>
       </header>
 
-      {/* Summary Metrics Bar */}
-      <div className="orders-metrics-bar">
-        <div className="metric-chip">
-          <span>Новых заказов:</span>
-          <b style={{ color: countNew > 0 ? "#e53e3e" : "inherit" }}>{countNew}</b>
-        </div>
-        <div className="metric-chip">
-          <span>В работе:</span>
-          <b>{countInProgress}</b>
-        </div>
-        <div className="metric-chip">
-          <span>Всего за смену:</span>
-          <b>{orders.length} заказов</b>
-        </div>
-        <div className="metric-chip">
-          <span>Сумма заказов:</span>
-          <b style={{ color: "var(--green)" }}>{totalRevenue} ₽</b>
-        </div>
-        {orders.length > 0 && (
-          <button className="clear-history-btn" onClick={clearCompleted}>
-            🗑️ Очистить выполненные
-          </button>
-        )}
-      </div>
-
-      {/* Orders List Workspace */}
-      <main className="orders-workspace">
+      {/* Main Content Area */}
+      <main className="pos-content">
         {filteredOrders.length === 0 ? (
-          <div className="orders-empty-state">
-            <span className="empty-icon">🛎️</span>
-            <h3>{orders.length === 0 ? "Ожидание первых заказов из корзины" : "В этом разделе пока нет заказов"}</h3>
-            <p>
-              Когда клиент на сайте выбирает блюда, заходит в корзину и нажимает <b>«Подтвердить заказ»</b>,
-              его заказ <b>мгновенно отображается на этом экране</b> со всеми данными: именем, телефоном, адресом, способом оплаты и списком блюд.
-            </p>
+          <div className="pos-empty">
+            <h2>{orders.length === 0 ? "Нет заказов" : "В этой вкладке нет заказов"}</h2>
+            <p>Когда посетитель на сайте отправляет заказ из корзины, он сразу появляется в этой таблице.</p>
             {orders.length === 0 && (
-              <button className="primary-demo-btn" onClick={createTestOrder}>
-                ➕ Создать демонстрационный заказ (для проверки вида)
+              <button type="button" className="pos-primary-btn" onClick={createTestOrder}>
+                Создать тестовый заказ
               </button>
             )}
           </div>
         ) : (
-          <div className="orders-grid">
+          <div className="pos-orders-list">
             {filteredOrders.map((order) => {
-              const statusBadges = {
-                new: { label: "🟡 НОВЫЙ ЗАКАЗ", cls: "badge-new" },
-                cooking: { label: "👨‍🍳 ГОТОВИТСЯ", cls: "badge-cooking" },
-                delivering: { label: "🚗 ПЕРЕДАН КУРЬЕРУ", cls: "badge-delivering" },
-                completed: { label: "✅ ВЫПОЛНЕН", cls: "badge-completed" },
-              };
-              const badge = statusBadges[order.status] || statusBadges.new;
+              const isAccepted = order.status === "cooking" || order.status === "completed" || (order.status as any) === "accepted";
+              const isRejected = (order.status as any) === "rejected" || (order.status as any) === "cancelled";
+              const isNew = !isAccepted && !isRejected;
 
               return (
-                <article className={`real-order-card status-${order.status}`} key={order.id}>
-                  {/* Card Header */}
-                  <div className="roc-header">
-                    <div>
-                      <span className="roc-id">{order.id}</span>
-                      <span className="roc-time">🕒 {order.createdAt}</span>
+                <div
+                  key={order.id}
+                  className={`order-row ${isNew ? "row-new" : ""} ${isAccepted ? "row-accepted" : ""} ${isRejected ? "row-rejected" : ""}`}
+                >
+                  <div className="order-row-top">
+                    <div className="order-id-block">
+                      <span className="order-num">{order.id}</span>
+                      <span className="order-time">{order.createdAt}</span>
                     </div>
-                    <span className={`roc-status-badge ${badge.cls}`}>{badge.label}</span>
+
+                    <div className="order-status-tag">
+                      {isNew && <span className="tag-new">Новый</span>}
+                      {isAccepted && <span className="tag-accepted">Принят</span>}
+                      {isRejected && <span className="tag-rejected">Отказ</span>}
+                    </div>
                   </div>
 
-                  {/* Customer Information Box */}
-                  <div className="roc-customer-box">
-                    <div className="roc-customer-row">
-                      <span className="roc-label">👤 Заказчик:</span>
-                      <b className="roc-val roc-name">{order.customerName}</b>
+                  <div className="order-details-grid">
+                    <div className="detail-item">
+                      <span className="detail-label">Клиент:</span>
+                      <b className="detail-value">{order.customerName}</b>
                     </div>
-                    <div className="roc-customer-row">
-                      <span className="roc-label">📞 Телефон:</span>
-                      <a href={`tel:${order.customerPhone}`} className="roc-val roc-phone">
+
+                    <div className="detail-item">
+                      <span className="detail-label">Телефон:</span>
+                      <a href={`tel:${order.customerPhone}`} className="phone-button">
                         {order.customerPhone}
-                        <span className="call-hint">Позвонить 📞</span>
                       </a>
                     </div>
-                    <div className="roc-customer-row">
-                      <span className="roc-label">💳 Оплата:</span>
-                      <b className="roc-val roc-payment">{order.paymentMethod}</b>
+
+                    <div className="detail-item">
+                      <span className="detail-label">Оплата:</span>
+                      <span className="detail-value">{order.paymentMethod}</span>
                     </div>
-                    <div className="roc-customer-row">
-                      <span className="roc-label">📍 Адрес / Куда:</span>
-                      <span className="roc-val roc-address">{order.customerAddress}</span>
+
+                    <div className="detail-item">
+                      <span className="detail-label">Адрес / Стол:</span>
+                      <span className="detail-value">{order.customerAddress}</span>
                     </div>
                   </div>
 
-                  {/* Ordered Items Table */}
-                  <div className="roc-items-box">
-                    <div className="roc-items-head">
-                      <span>Состав заказа:</span>
+                  <div className="order-items-table">
+                    <div className="items-header">
+                      <span>Наименование</span>
                       <span>Кол-во</span>
                       <span>Сумма</span>
                     </div>
-                    <ul className="roc-items-list">
-                      {order.items.map((it, idx) => (
-                        <li key={`${it.name}-${idx}`}>
-                          <div className="it-name-col">
-                            <b>{it.name}</b>
-                            {it.sizeLabel && <small className="it-size">{it.sizeLabel}</small>}
-                          </div>
-                          <span className="it-qty">× {it.quantity}</span>
-                          <span className="it-price">{it.itemTotal} ₽</span>
-                        </li>
-                      ))}
-                    </ul>
+                    {order.items.map((it, idx) => (
+                      <div className="item-row" key={`${it.name}-${idx}`}>
+                        <div className="item-name">
+                          <span>{it.name}</span>
+                          {it.sizeLabel && <small> ({it.sizeLabel})</small>}
+                        </div>
+                        <div className="item-qty">{it.quantity} шт.</div>
+                        <div className="item-sum">{it.itemTotal} ₽</div>
+                      </div>
+                    ))}
                   </div>
 
-                  {/* Pricing Breakdown */}
-                  <div className="roc-totals">
-                    <div className="roc-subtotal-line">
-                      <span>Сумма блюд: {order.subtotal} ₽</span>
-                      <span>Доставка: {order.delivery ? `${order.delivery} ₽` : "0 ₽ (Бесплатно)"}</span>
+                  <div className="order-total-bar">
+                    <div className="total-text">
+                      Итого к оплате: <b>{order.total} ₽</b>
+                      {order.delivery > 0 && <small> (включая доставку {order.delivery} ₽)</small>}
                     </div>
-                    <div className="roc-grand-total">
-                      <span>Итого к получению:</span>
-                      <strong>{order.total} ₽</strong>
-                    </div>
-                  </div>
 
-                  {/* Actions / Status Controls */}
-                  <div className="roc-actions">
-                    {order.status === "new" && (
+                    <div className="order-button-group">
+                      {isNew && (
+                        <>
+                          <button
+                            type="button"
+                            className="btn-action accept"
+                            onClick={() => setOrderStatus(order.id, "accepted")}
+                          >
+                            Принять
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-action reject"
+                            onClick={() => setOrderStatus(order.id, "rejected")}
+                          >
+                            Отказ
+                          </button>
+                        </>
+                      )}
+
+                      {isAccepted && (
+                        <div className="status-label-done">
+                          <span>Заказ принят</span>
+                          <button
+                            type="button"
+                            className="btn-secondary"
+                            onClick={() => setOrderStatus(order.id, "rejected")}
+                          >
+                            Отказ
+                          </button>
+                        </div>
+                      )}
+
+                      {isRejected && (
+                        <div className="status-label-cancelled">
+                          <span>Заказ отклонён</span>
+                          <button
+                            type="button"
+                            className="btn-secondary"
+                            onClick={() => setOrderStatus(order.id, "accepted")}
+                          >
+                            Вернуть в принятые
+                          </button>
+                        </div>
+                      )}
+
                       <button
-                        className="btn-status-act btn-accept"
-                        onClick={() => updateStatus(order.id, "cooking")}
+                        type="button"
+                        className="btn-delete"
+                        onClick={() => deleteOrder(order.id)}
+                        title="Удалить"
                       >
-                        👨‍🍳 Принять и готовить
+                        Удалить
                       </button>
-                    )}
-                    {order.status === "cooking" && (
-                      <button
-                        className="btn-status-act btn-deliver"
-                        onClick={() => updateStatus(order.id, "delivering")}
-                      >
-                        🚗 Передать курьеру / Готов
-                      </button>
-                    )}
-                    {order.status === "delivering" && (
-                      <button
-                        className="btn-status-act btn-complete"
-                        onClick={() => updateStatus(order.id, "completed")}
-                      >
-                        ✅ Заказ выполнен и оплачен
-                      </button>
-                    )}
-                    {order.status === "completed" && (
-                      <span className="completed-stamp">Заказ закрыт</span>
-                    )}
-                    <button
-                      className="btn-delete-order"
-                      onClick={() => deleteOrder(order.id)}
-                      title="Удалить заказ"
-                    >
-                      🗑️
-                    </button>
+                    </div>
                   </div>
-                </article>
+                </div>
               );
             })}
           </div>
