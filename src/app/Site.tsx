@@ -11,6 +11,31 @@ export const asset = (url: string) => {
 
 export type Category = "Все" | "Пицца" | "Закуски" | "Салаты" | "Супы" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
 
+export type RealOrderItem = {
+  id: number;
+  name: string;
+  sizeLabel?: string;
+  price: number;
+  quantity: number;
+  itemTotal: number;
+  image: string;
+};
+
+export type RealOrder = {
+  id: string;
+  customerName: string;
+  customerPhone: string;
+  customerAddress: string;
+  paymentMethod: string;
+  items: RealOrderItem[];
+  subtotal: number;
+  delivery: number;
+  total: number;
+  createdAt: string;
+  timestamp: number;
+  status: "new" | "cooking" | "delivering" | "completed";
+};
+
 export type SizeOption = {
   label: string;
   price: number;
@@ -958,7 +983,54 @@ export default function Site() {
   const [cartOpen, setCartOpen] = useState(false);
   const [checkout, setCheckout] = useState(false);
   const [ordered, setOrdered] = useState(false);
-  const [payment, setPayment] = useState("card");
+  const [payment, setPayment] = useState("cash");
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [customerAddress, setCustomerAddress] = useState("");
+
+  const handleOrderSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (cartItems.length === 0) return;
+
+    const paymentTitles: Record<string, string> = {
+      card: "Картой онлайн",
+      sbp: "СБП (по QR-коду)",
+      cash: "При получении (наличные или карта)",
+    };
+
+    const newOrder: RealOrder = {
+      id: `№${Math.floor(100 + Math.random() * 900)}`,
+      customerName: customerName.trim() || "Гость",
+      customerPhone: customerPhone.trim(),
+      customerAddress: customerAddress.trim() || "В кафе / Самовывоз",
+      paymentMethod: paymentTitles[payment] || payment,
+      items: cartItems.map((item) => ({
+        id: item.product.id,
+        name: item.product.name,
+        sizeLabel: item.sizeLabel,
+        price: item.price,
+        quantity: item.quantity,
+        itemTotal: item.itemTotal,
+        image: item.product.image,
+      })),
+      subtotal,
+      delivery,
+      total,
+      createdAt: new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" }),
+      timestamp: Date.now(),
+      status: "new",
+    };
+
+    try {
+      const existing = JSON.parse(localStorage.getItem("7vkysov_real_orders") || "[]");
+      localStorage.setItem("7vkysov_real_orders", JSON.stringify([newOrder, ...existing]));
+      window.dispatchEvent(new Event("storage"));
+    } catch (err) {
+      console.error("Failed to save real order:", err);
+    }
+
+    setOrdered(true);
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
@@ -1451,6 +1523,9 @@ export default function Site() {
                     setCartOpen(false);
                     setOrdered(false);
                     setCart({});
+                    setCustomerName("");
+                    setCustomerPhone("");
+                    setCustomerAddress("");
                   }}
                 >
                   Отлично
@@ -1459,23 +1534,34 @@ export default function Site() {
             ) : (
               <>
                 <h2>Оформление</h2>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setOrdered(true);
-                  }}
-                >
+                <form onSubmit={handleOrderSubmit}>
                   <label>
                     Имя
-                    <input required placeholder="Анна" />
+                    <input
+                      required
+                      placeholder="Анна"
+                      value={customerName}
+                      onChange={(e) => setCustomerName(e.target.value)}
+                    />
                   </label>
                   <label>
                     Телефон
-                    <input required type="tel" placeholder="+7 (___) ___-__-__" />
+                    <input
+                      required
+                      type="tel"
+                      placeholder="+7 (963) 901-18-18"
+                      value={customerPhone}
+                      onChange={(e) => setCustomerPhone(e.target.value)}
+                    />
                   </label>
                   <label>
-                    Адрес доставки
-                    <input required placeholder="Улица, дом, квартира" />
+                    Адрес доставки (или номер столика / самовывоз)
+                    <input
+                      required
+                      placeholder="ул. Ленина, 38 / Стол №... / Самовывоз"
+                      value={customerAddress}
+                      onChange={(e) => setCustomerAddress(e.target.value)}
+                    />
                   </label>
                   <fieldset>
                     <legend>Способ оплаты</legend>
