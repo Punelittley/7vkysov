@@ -1144,7 +1144,7 @@ export default function Site() {
             </div>
           </div>
           <div className="hero-meta">
-            <span><b>4.9</b> оценка гостей</span>
+            <span><b>5.0</b> оценка гостей</span>
             <span><b>45 мин</b> средняя доставка</span>
           </div>
         </section>
@@ -1351,7 +1351,7 @@ export default function Site() {
 
         <section className="reviews">
           <div className="reviews-score reveal">
-            <span>4.9</span>
+            <span>5.0</span>
             <div>
               <b>★★★★★</b>
               <small>средняя оценка гостей</small>
