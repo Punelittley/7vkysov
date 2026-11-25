@@ -1225,13 +1225,30 @@ export default function Site() {
             </div>
           </div>
           <div className="gallery-ticker" aria-hidden="true">
-            <div>
-              <span>Овершейки и коктейли</span><i>·</i>
-              <span>Листовой чай</span><i>·</i>
-              <span>Горячие блюда</span><i>·</i>
-              <span>Свежая выпечка</span><i>·</i>
-              <span>Овершейки и коктейли</span><i>·</i>
-              <span>Листовой чай</span><i>·</i>
+            <div className="gallery-ticker-track">
+              {[
+                { icon: "🍹", text: "Овершейки и коктейли" },
+                { icon: "🍃", text: "Листовой чай" },
+                { icon: "🥩", text: "Горячие блюда" },
+                { icon: "🥐", text: "Свежая выпечка" },
+                { icon: "🍕", text: "Римская пицца" },
+                { icon: "☕", text: "Ароматный кофе" },
+                { icon: "🍝", text: "Домашняя паста" },
+                { icon: "🍰", text: "Фирменные десерты" },
+                { icon: "🍹", text: "Овершейки и коктейли" },
+                { icon: "🍃", text: "Листовой чай" },
+                { icon: "🥩", text: "Горячие блюда" },
+                { icon: "🥐", text: "Свежая выпечка" },
+                { icon: "🍕", text: "Римская пицца" },
+                { icon: "☕", text: "Ароматный кофе" },
+                { icon: "🍝", text: "Домашняя паста" },
+                { icon: "🍰", text: "Фирменные десерты" },
+              ].map((item, index) => (
+                <div className="ticker-pill" key={`${item.text}-${index}`}>
+                  <span className="ticker-icon">{item.icon}</span>
+                  <span className="ticker-text">{item.text}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>
