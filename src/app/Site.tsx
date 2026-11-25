@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-type Category = "Все" | "Закуски" | "Салаты" | "Супы" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
+type Category = "Все" | "Пицца" | "Закуски" | "Салаты" | "Супы" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
 
 type SizeOption = {
   label: string;
@@ -10,7 +10,7 @@ type SizeOption = {
 type Product = {
   id: number;
   name: string;
-  category: "Закуски" | "Салаты" | "Супы" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
+  category: "Пицца" | "Закуски" | "Салаты" | "Супы" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
   description: string;
   price: number;
   weight?: string;
@@ -20,6 +20,174 @@ type Product = {
 };
 
 const products: Product[] = [
+  // Пицца
+  {
+    id: 70,
+    name: "Мясное ассорти",
+    category: "Пицца",
+    description: "Ветчина, нежный карбонад, пикантные колбаски салями, чесночный соус и тягучая моцарелла",
+    price: 450,
+    badge: "Сытно",
+    image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=1000&q=88",
+    sizes: [
+      { label: "20 см", price: 450 },
+      { label: "30 см", price: 810 },
+      { label: "35 см", price: 890 },
+    ],
+  },
+  {
+    id: 71,
+    name: "Гурман",
+    category: "Пицца",
+    description: "Ветчина, сочный карбонад, колбаски салями, свежие шампиньоны, фирменный томатный соус и моцарелла",
+    price: 460,
+    badge: "Хит",
+    image: "/images/pizza-gourmet.jpg",
+    sizes: [
+      { label: "20 см", price: 460 },
+      { label: "30 см", price: 815 },
+      { label: "35 см", price: 980 },
+    ],
+  },
+  {
+    id: 72,
+    name: "Пепперони",
+    category: "Пицца",
+    description: "Острые колбаски пепперони, пряный томатный соус и двойная порция расплавленного сыра моцарелла",
+    price: 470,
+    badge: "Хит",
+    image: "/images/pizza-pepperoni.jpg",
+    sizes: [
+      { label: "20 см", price: 470 },
+      { label: "30 см", price: 810 },
+      { label: "35 см", price: 980 },
+    ],
+  },
+  {
+    id: 73,
+    name: "Чикита",
+    category: "Пицца",
+    description: "Ароматная копченая курочка, шампиньоны, спелые томаты, сыр моцарелла и фирменный томатный соус",
+    price: 430,
+    badge: "Любимое",
+    image: "/images/pizza-gourmet.jpg",
+    sizes: [
+      { label: "20 см", price: 430 },
+      { label: "30 см", price: 715 },
+      { label: "35 см", price: 850 },
+    ],
+  },
+  {
+    id: 74,
+    name: "Мясная XXL",
+    category: "Пицца",
+    description: "Охотничьи колбаски, хрустящий бекон, пепперони, маринованные огурчики, томатный соус и сыр моцарелла",
+    price: 540,
+    badge: "XXL",
+    image: "/images/pizza-pepperoni.jpg",
+    sizes: [
+      { label: "20 см", price: 540 },
+      { label: "30 см", price: 990 },
+      { label: "35 см", price: 1170 },
+    ],
+  },
+  {
+    id: 75,
+    name: "Палермо",
+    category: "Пицца",
+    description: "Нежная ветчина, отборные шампиньоны, сливочный грибной соус и золотистая сырная корочка моцареллы",
+    price: 430,
+    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1000&q=88",
+    sizes: [
+      { label: "20 см", price: 430 },
+      { label: "30 см", price: 715 },
+      { label: "35 см", price: 750 },
+    ],
+  },
+  {
+    id: 76,
+    name: "Сырная",
+    category: "Пицца",
+    description: "Двойная порция сливочной моцареллы, пикантные кусочки брынзы и ароматный сырный соус",
+    price: 470,
+    badge: "Сырная",
+    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1000&q=88",
+    sizes: [
+      { label: "20 см", price: 470 },
+      { label: "30 см", price: 850 },
+      { label: "35 см", price: 1050 },
+    ],
+  },
+  {
+    id: 77,
+    name: "Цыпленок Барбекю",
+    category: "Пицца",
+    description: "Копченая курочка, сочный бекон, красный крымский лук, дымный соус барбекю, томаты и моцарелла",
+    price: 430,
+    badge: "Барбекю",
+    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1000&q=88",
+    sizes: [
+      { label: "20 см", price: 430 },
+      { label: "30 см", price: 730 },
+      { label: "35 см", price: 890 },
+    ],
+  },
+  {
+    id: 78,
+    name: "Грибная",
+    category: "Пицца",
+    description: "Щедрая порция свежих шампиньонов, нежный сливочно-грибной соус и расплавленная моцарелла",
+    price: 430,
+    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1000&q=88",
+    sizes: [
+      { label: "20 см", price: 430 },
+      { label: "30 см", price: 810 },
+      { label: "35 см", price: 860 },
+    ],
+  },
+  {
+    id: 79,
+    name: "Сицилия",
+    category: "Пицца",
+    description: "Сладкий болгарский перец, шампиньоны, рассольная брынза, маслины, сыр моцарелла и томатный соус",
+    price: 440,
+    badge: "Средиземноморская",
+    image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=1000&q=88",
+    sizes: [
+      { label: "20 см", price: 440 },
+      { label: "30 см", price: 780 },
+      { label: "35 см", price: 910 },
+    ],
+  },
+  {
+    id: 80,
+    name: "Маргарита",
+    category: "Пицца",
+    description: "Классическая итальянская пицца: пряный томатный соус, сочные спелые томаты и нежная моцарелла",
+    price: 345,
+    badge: "Классика",
+    image: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=1000&q=88",
+    sizes: [
+      { label: "20 см", price: 345 },
+      { label: "30 см", price: 575 },
+      { label: "35 см", price: 670 },
+    ],
+  },
+  {
+    id: 81,
+    name: "Гавайская",
+    category: "Пицца",
+    description: "Сочные кусочки ананаса, копченое куриное филе, томатный соус и тягучий сыр моцарелла",
+    price: 400,
+    badge: "Хит",
+    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1000&q=88",
+    sizes: [
+      { label: "20 см", price: 400 },
+      { label: "30 см", price: 695 },
+      { label: "35 см", price: 850 },
+    ],
+  },
+
   // Супы
   {
     id: 66,
@@ -749,7 +917,7 @@ const products: Product[] = [
   },
 ];
 
-const categories: Category[] = ["Все", "Закуски", "Салаты", "Супы", "Горячее", "Паста", "Кофе", "Коктейли и Овершейки", "Авторский чай", "Классический чай", "Лимонады", "Десерты"];
+const categories: Category[] = ["Все", "Пицца", "Закуски", "Салаты", "Супы", "Горячее", "Паста", "Кофе", "Коктейли и Овершейки", "Авторский чай", "Классический чай", "Лимонады", "Десерты"];
 
 function Icon({ name, size = 20 }: { name: "cart" | "arrow" | "close" | "minus" | "plus" | "check" | "phone" | "pin"; size?: number }) {
   const paths = {
