@@ -1129,17 +1129,11 @@ export default function Site() {
           </div>
 
           <div className="hero-copy">
-            <span className="eyebrow" style={{ letterSpacing: "2px", color: "#f2c94c", marginBottom: "6px" }}>
-              🍽️ Кафе «7 вкусов» — уютно, вкусно, по‑домашнему
-            </span>
             <h1>
               Вкусные встречи<br />
               <em>начинаются здесь</em>
             </h1>
-            <p>
-              ул. Ленина, 38, Белорецк · Бизнес-ланч с 12:00 до 15:00 (будни)<br />
-              Вечера с семьёй и друзьями · Доставка по городу
-            </p>
+            <p>Грандиозные овершейки, ароматный кофе, классический и авторский чай, сочные горячие блюда, паста и десерты.</p>
             <div>
               <a className="primary" href="#menu">
                 Выбрать блюда <Icon name="arrow" />
@@ -1150,10 +1144,8 @@ export default function Site() {
             </div>
           </div>
           <div className="hero-meta">
-            <span><b>📍 ул. Ленина, 38</b> Белорецк</span>
-            <span><b>🥗 12:00–15:00</b> бизнес-ланч (будни)</span>
-            <span><b>🍷 Вечера</b> с семьёй и друзьями</span>
-            <span><b>🚀 от 45 мин</b> доставка по городу</span>
+            <span><b>4.9</b> оценка гостей</span>
+            <span><b>45 мин</b> средняя доставка</span>
           </div>
         </section>
 
