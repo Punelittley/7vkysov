@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
-type Category = "Все" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
+type Category = "Все" | "Закуски" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
 
 type SizeOption = {
   label: string;
@@ -10,7 +10,7 @@ type SizeOption = {
 type Product = {
   id: number;
   name: string;
-  category: "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
+  category: "Закуски" | "Горячее" | "Паста" | "Кофе" | "Коктейли и Овершейки" | "Авторский чай" | "Классический чай" | "Лимонады" | "Десерты";
   description: string;
   price: number;
   weight?: string;
@@ -20,6 +20,76 @@ type Product = {
 };
 
 const products: Product[] = [
+  // Закуски
+  {
+    id: 50,
+    name: "Овощная тарелка",
+    category: "Закуски",
+    description: "Хрустящие огурчики, болгарский перец, томаты, свежий редис, красный лук, свежая зелень и нежный фирменный соус",
+    price: 540,
+    weight: "180 г",
+    badge: "Свежее",
+    image: "/images/appetizer-vegetables.jpg",
+  },
+  {
+    id: 51,
+    name: "Мясная тарелка",
+    category: "Закуски",
+    description: "Ассорти благородных мясных деликатесов и сыровяленых колбас, подается с дижонской горчицей и зеленью",
+    price: 860,
+    weight: "260 г",
+    badge: "Хит",
+    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 52,
+    name: "Закуска по-русски",
+    category: "Закуски",
+    description: "Традиционная русская закуска: маринованные огурцы, грибы, квашеная капуста, пряное сало и отварной картофель",
+    price: 400,
+    weight: "230 г",
+    badge: "Традиция",
+    image: "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 53,
+    name: "Сырная тарелка",
+    category: "Закуски",
+    description: "Изысканное плато отборных благородных сыров с цветочным медом, грецкими орехами и свежим виноградом",
+    price: 1130,
+    weight: "250/50/10 г",
+    badge: "Изысканно",
+    image: "https://images.unsplash.com/photo-1631379578550-7038263db699?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 54,
+    name: "Рыбное плато",
+    category: "Закуски",
+    description: "Лосось слабосоленый собственного посола, обжаренные сочные лангустины, дольки лимона и маслины",
+    price: 1160,
+    weight: "80/80/30 г",
+    badge: "Деликатес",
+    image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 55,
+    name: "Лосось собственного посола",
+    category: "Закуски",
+    description: "Нежные ломтики атлантического лосося шеф-посола с сочным лимоном и хрустящими тостами",
+    price: 790,
+    weight: "80/30 г",
+    badge: "Шеф-посол",
+    image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1000&q=88",
+  },
+  {
+    id: 56,
+    name: "Оливки / маслины",
+    category: "Закуски",
+    description: "Отборные крупные греческие оливки и маслины с прованскими травами и оливковым маслом",
+    price: 240,
+    weight: "90 г",
+    image: "https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=1000&q=88",
+  },
   // Кофе
   {
     id: 41,
@@ -545,7 +615,7 @@ const products: Product[] = [
   },
 ];
 
-const categories: Category[] = ["Все", "Горячее", "Паста", "Кофе", "Коктейли и Овершейки", "Авторский чай", "Классический чай", "Лимонады", "Десерты"];
+const categories: Category[] = ["Все", "Закуски", "Горячее", "Паста", "Кофе", "Коктейли и Овершейки", "Авторский чай", "Классический чай", "Лимонады", "Десерты"];
 
 function Icon({ name, size = 20 }: { name: "cart" | "arrow" | "close" | "minus" | "plus" | "check" | "phone" | "pin"; size?: number }) {
   const paths = {
